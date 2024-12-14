@@ -3,7 +3,7 @@ sequenceDiagram
     participant user
     participant browser
     participant server
-    user-->>browser: user presses submit to create a note
+    user->>browser: user presses submit to create a note
     browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note
     Note right of browser: The browser sends a POST request, including the user's input as body, to the address /new_note
     activate server

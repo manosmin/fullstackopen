@@ -29,7 +29,7 @@ sequenceDiagram
     Note left of server: The server responds with the JSON file
     deactivate server
     Note right of browser: The browser executes the function that renders the notes as a list
-    user-->>browser: user presses submit to create a note
+    user->>browser: user presses submit to create a note
     Note right of browser: The browser is prevented from performing the default form submission behavior (redirection to an address)
     Note right of browser: The browser starts executing the JavaScript code that clears the input field, creates a new note and updates the list
     browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
