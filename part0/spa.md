@@ -21,7 +21,6 @@ sequenceDiagram
     server-->>browser: the JavaScript file
     Note left of server: The server responds with the JavaScript file
     deactivate server
-    Note right of browser: The browser starts executing the JavaScript code that fetches the JSON from the server
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
     Note right of browser: The browser starts executing the JavaScript code that fetches the JSON from the server
     activate server
