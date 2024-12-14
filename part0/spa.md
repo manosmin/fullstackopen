@@ -23,6 +23,7 @@ sequenceDiagram
     deactivate server
     Note right of browser: The browser starts executing the JavaScript code that fetches the JSON from the server
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    Note right of browser: The browser starts executing the JavaScript code that fetches the JSON from the server
     activate server
     server-->>browser: [{"content": "","date": "2024-12-14T02:58:11.621Z"}, ... ]
     Note left of server: The server responds with the JSON file
