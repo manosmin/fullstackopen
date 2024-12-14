@@ -14,8 +14,8 @@ sequenceDiagram
     Note right of browser: The browser sends a GET request to the address /notes
     activate server
     server-->>browser: HTML document
-    deactivate server
     Note left of server: The server responds with the updated HTML document
+    deactivate server
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
     Note right of browser: The browser sends a GET request, to fetch the CSS file of the HTML document
     activate server

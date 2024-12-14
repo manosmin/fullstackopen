@@ -25,6 +25,7 @@ sequenceDiagram
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
     activate server
     server-->>browser: [{"content": "","date": "2024-12-14T02:58:11.621Z"}, ... ]
+    Note left of server: The server responds with the JSON file
     deactivate server
     Note right of browser: The browser executes the function that renders the notes as a list
     user-->>browser: user presses submit to create a note
@@ -35,5 +36,6 @@ sequenceDiagram
     activate server
     server-->>browser: JSON file
     Note left of server: The server responds with status code 201 and a JSON file {"message":"note created"} informing the user that the note was succesfully created
+    deactivate server
     Note right of browser: The browser logs the response body to the console
 ```
