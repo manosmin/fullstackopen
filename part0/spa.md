@@ -1,3 +1,4 @@
+```mermaid
 sequenceDiagram
     participant user
     participant browser
@@ -35,3 +36,4 @@ sequenceDiagram
     server-->>browser: JSON file
     Note left of server: The server responds with status code 201 and a JSON file {"message":"note created"} informing the user that the note was succesfully created
     Note right of browser: The browser logs the response body to the console
+```
