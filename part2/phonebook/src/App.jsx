@@ -17,8 +17,8 @@ const App = () => {
     const personObject = {
       name: newName,
     };
-    console.log(personObject);
-    setPersons(persons.concat(personObject));
+    const existsPerson = persons.some((p) => personObject.name === p.name);
+    existsPerson ? console.log(`${personObject.name} is already added to phonebook`) : setPersons(persons.concat(personObject));
   };
 
   return (
