@@ -29,20 +29,21 @@ const Form = ({ handleSubmit, newName, handleChange, newNumber }) => {
   );
 };
 
-const Persons = ({ persons }) => {
+const Persons = ({ persons, deleteHim }) => {
   return (
     <ul>
       {persons.map((person) => (
-        <Person key={person.name} name={person.name} number={person.number} />
+        <Person key={person.name} id={person.id} name={person.name} number={person.number} deleteHim={deleteHim} />
       ))}
     </ul>
   );
 };
 
-const Person = ({ name, number }) => {
+const Person = ({ id, name, number, deleteHim }) => {
   return (
     <li>
       {name} {number}
+      <button onClick={() => deleteHim(id)}>delete</button>
     </li>
   );
 };
@@ -96,6 +97,21 @@ const App = () => {
     setNewName("");
     setNewNumber("");
   };
+  
+  const deleteHim = (id) => {
+    const personToBeDeleted = persons.find((p) => p.id === id);
+    const confirmDelete = window.confirm(`Delete ${personToBeDeleted.name}?`);
+    if (!confirmDelete) {
+      return;
+    }
+    
+    return personService.deletePerson(id).then((response) => {
+      console.log(response);
+      setPersons(persons.filter((p) => p.id !== id));
+    }).catch(error => {
+      console.error("Error deleting person:", error);
+    });;
+  }
 
   return (
     <div>
@@ -108,7 +124,7 @@ const App = () => {
         newNumber={newNumber}
       />
       <h2>Numbers</h2>
-      <Persons persons={filteredPersons} />
+      <Persons persons={filteredPersons} deleteHim={deleteHim} />
     </div>
   );
 };
