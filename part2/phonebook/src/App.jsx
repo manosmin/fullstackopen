@@ -83,14 +83,29 @@ const App = () => {
       name: newName,
       number: newNumber,
     };
-    const existsPerson = persons.some((p) => personObject.name === p.name);
-    existsPerson
-      ? console.log(`${personObject.name} is already added to phonebook`)
-      : personService.create(personObject).then((response) => {
-          console.log(response);
-          setPersons(persons.concat(response));
-          clearInput();
-        });
+
+    const existingPerson = persons.find((p) => personObject.name === p.name);
+
+    if (existingPerson) {
+      const updatedPerson = { ...existingPerson, number: newNumber };
+      personService.update(existingPerson.id, updatedPerson).then((response) => {
+        console.log("Person updated", response);
+        setPersons(persons.map((p) => (p.id === existingPerson.id ? response : p)));
+        clearInput();
+      })
+      .catch((error) => {
+        console.error("Failed to update person", error);
+      })
+    } else {
+      personService.create(personObject)  .then((response) => {
+        console.log("Person created", response);
+        setPersons(persons.concat(response));
+        clearInput();
+      })
+      .catch((error) => {
+        console.error("Failed to create person", error);
+      });
+    }
   };
 
   const clearInput = () => {
