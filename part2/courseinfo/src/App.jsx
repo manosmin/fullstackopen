@@ -1,0 +1,68 @@
+const Header = ({ course }) => {
+  console.log('Header', course);
+  return (
+    <>
+      <h1>{course}</h1>
+    </>
+  );
+};
+
+const Content = ({ parts }) => {
+  console.log('Content', parts);
+  return (
+    <>
+      {parts.map((part, index) => (
+        <Part key={index} name={part.name} exercise={part.exercises}></Part>
+      ))}
+    </>
+  );
+};
+
+const Part = ({ name, exercise }) => {
+  console.log('Part', name, exercise);
+  return (
+    <>
+      <p>
+        {name} {exercise}
+      </p>
+    </>
+  );
+};
+
+const Total = ({ parts }) => {
+  console.log('Total', parts);
+  const totalExercises = parts.reduce((sum, part) => sum + part.exercises, 0);
+  return (
+    <>
+      <p>Number of exercises {totalExercises}</p>
+    </>
+  );
+};
+
+const App = () => {
+  const course = "Half Stack application development";
+  const parts = [
+    {
+      name: "Fundamentals of React",
+      exercises: 10,
+    },
+    {
+      name: "Using props to pass data",
+      exercises: 7,
+    },
+    {
+      name: "State of a component",
+      exercises: 14,
+    },
+  ];
+
+  return (
+    <div>
+      <Header course={course} />
+      <Content parts={parts} />
+      <Total parts={parts} />
+    </div>
+  );
+};
+
+export default App;
