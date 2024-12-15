@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const Filter = ({ filter, handleChange }) => {
   return (
     <div>
-      filter shown with <input name="filter" value={filter} onChange={handleChange} />
+      filter shown with{" "}
+      <input name="filter" value={filter} onChange={handleChange} />
     </div>
   );
 };
@@ -16,7 +18,8 @@ const Form = ({ handleSubmit, newName, handleChange, newNumber }) => {
         name: <input name="name" value={newName} onChange={handleChange} />
       </div>
       <div>
-        number: <input name="number" value={newNumber} onChange={handleChange} />
+        number:{" "}
+        <input name="number" value={newNumber} onChange={handleChange} />
       </div>
       <div>
         <button type="submit">add</button>
@@ -36,16 +39,15 @@ const Persons = ({ persons }) => {
 };
 
 const Person = ({ name, number }) => {
-  return <li>{name} {number}</li>;
+  return (
+    <li>
+      {name} {number}
+    </li>
+  );
 };
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-  ])
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
@@ -61,7 +63,17 @@ const App = () => {
     }
   };
 
-  const filteredPersons = persons.filter((person) => person.name.toLowerCase().includes(filter.toLowerCase()));
+  useEffect(() => {
+    console.log("effect");
+    axios.get("http://localhost:3001/persons").then((response) => {
+      console.log("promise fulfilled");
+      setPersons(response.data);
+    });
+  }, []);
+
+  const filteredPersons = persons.filter((person) =>
+    person.name.toLowerCase().includes(filter.toLowerCase())
+  );
 
   const handleSubmit = (event) => {
     event.preventDefault();
