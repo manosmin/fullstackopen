@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import personService from "./services/persons.js";
 
 const Filter = ({ filter, handleChange }) => {
   return (
@@ -79,12 +80,21 @@ const App = () => {
     event.preventDefault();
     const personObject = {
       name: newName,
-      number: newNumber
+      number: newNumber,
     };
     const existsPerson = persons.some((p) => personObject.name === p.name);
     existsPerson
       ? console.log(`${personObject.name} is already added to phonebook`)
-      : setPersons(persons.concat(personObject));
+      : personService.create(personObject).then((response) => {
+          console.log(response);
+          setPersons(persons.concat(response));
+          clearInput();
+        });
+  };
+
+  const clearInput = () => {
+    setNewName("");
+    setNewNumber("");
   };
 
   return (
