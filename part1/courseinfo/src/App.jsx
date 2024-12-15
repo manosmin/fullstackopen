@@ -11,9 +11,20 @@ const Content = ({ parts }) => {
   console.log('Content', parts);
   return (
     <>
-      {parts.map((part) => (
-        <p key={part.name}>{part.name} {part.exercises}</p>
+      {parts.map((part, index) => (
+        <Part key={index} name={part.name} exercise={part.exercises}></Part>
       ))}
+    </>
+  );
+};
+
+const Part = ({ name, exercise }) => {
+  console.log('Part', name, exercise);
+  return (
+    <>
+      <p>
+        {name} {exercise}
+      </p>
     </>
   );
 };
