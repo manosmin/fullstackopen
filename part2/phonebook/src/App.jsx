@@ -2,6 +2,19 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import personService from "./services/persons.js";
 
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className='success'>
+      {message}
+    </div>
+  )
+}
+
+
 const Filter = ({ filter, handleChange }) => {
   return (
     <div>
@@ -53,6 +66,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -92,6 +106,10 @@ const App = () => {
         console.log("Person updated", response);
         setPersons(persons.map((p) => (p.id === existingPerson.id ? response : p)));
         clearInput();
+        setMessage(`Person ${response.name} updated`);
+        setTimeout(() => {
+          setMessage(null)
+        }, 3000)
       })
       .catch((error) => {
         console.error("Failed to update person", error);
@@ -101,6 +119,10 @@ const App = () => {
         console.log("Person created", response);
         setPersons(persons.concat(response));
         clearInput();
+        setMessage(`Person ${response.name} created`);
+        setTimeout(() => {
+          setMessage(null)
+        }, 3000)
       })
       .catch((error) => {
         console.error("Failed to create person", error);
@@ -123,14 +145,19 @@ const App = () => {
     return personService.deletePerson(id).then((response) => {
       console.log(response);
       setPersons(persons.filter((p) => p.id !== id));
+      setMessage(`Person ${response.name} deleted`);
+        setTimeout(() => {
+          setMessage(null)
+        }, 3000)
     }).catch(error => {
       console.error("Error deleting person:", error);
-    });;
+    });
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      {message && <Notification message={message} />}
       <Filter filter={filter} handleChange={handleChange} />
       <Form
         handleSubmit={handleSubmit}
