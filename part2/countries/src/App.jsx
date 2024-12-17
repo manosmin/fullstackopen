@@ -13,8 +13,7 @@ const SearchField = ({ query, handleChange }) => {
 const Results = ({ countries, message, selectedCountry, handleShowInfo }) => {
   if (countries.length === 0) {
     return <p>{message}</p>;
-  } 
-  else if (countries.length === 1 || selectedCountry) {
+  } else if (countries.length === 1 || selectedCountry) {
     const country = selectedCountry || countries[0];
     const languages = Object.values(country.lang);
 
@@ -22,18 +21,24 @@ const Results = ({ countries, message, selectedCountry, handleShowInfo }) => {
       <div>
         <h2>{country.name}</h2>
         <img src={country.flag} />
-        <p><span style={{fontWeight: "bold"}}>Capital: </span>{country.capital}</p>
-        <p><span style={{fontWeight: "bold"}}>Area: </span>{country.area}</p>
+        <p>
+          <span style={{ fontWeight: "bold" }}>Capital: </span>
+          {country.capital}
+        </p>
+        <p>
+          <span style={{ fontWeight: "bold" }}>Area: </span>
+          {country.area}
+        </p>
         <h3>Languages: </h3>
         <ul>
           {languages.map((lang, index) => (
             <li key={index}>{lang}</li>
           ))}
         </ul>
+        <Weather country={country.name}/>
       </div>
     );
-  } 
-  else {
+  } else {
     return (
       <ul>
         {countries.map((c) => (
@@ -45,6 +50,47 @@ const Results = ({ countries, message, selectedCountry, handleShowInfo }) => {
       </ul>
     );
   }
+};
+
+const Weather = ({ country }) => {
+  const [weatherData, setWeatherData] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (!country) return;
+
+    const fetchWeather = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/weather?country=${country}`);
+        const data = await response.json();
+        console.log(data);
+        
+        const weather = data[0]?.weather;
+        setWeatherData(weather);
+      } catch (e) {
+        setError("Error fetching weather: ", e);
+      }
+    };
+
+    fetchWeather();
+  }, [country]);
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  if (!weatherData) {
+    return null;
+  }
+
+  return (
+    <div>
+      <h2>Weather in {country}</h2>
+      <img src={`https://openweathermap.org/img/wn/${weatherData.icon}@2x.png`}></img>
+      <p><span style={{ fontWeight: "bold" }}>Temperature: </span>{weatherData.temperature} °C</p>
+      <p><span style={{ fontWeight: "bold" }}>Wind Speed: </span>{weatherData.wind_speed} km/h</p>
+    </div>
+  );
 };
 
 const App = () => {
@@ -72,7 +118,6 @@ const App = () => {
           flag: c.flags.png,
         }));
         setCountries(parsedCountries);
-        console.log(parsedCountries);
       } catch (error) {
         console.error("Error fetching countries:", error);
       }
@@ -97,8 +142,6 @@ const App = () => {
       const filteredCountries = countries.filter((c) => {
         return c.name.toLowerCase().includes(query.toLowerCase());
       });
-
-      console.log(filteredCountries);
 
       if (filteredCountries.length > 10) {
         setMessage("Too many results, insert more letters");

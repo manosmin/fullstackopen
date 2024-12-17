@@ -1,0 +1,45 @@
+{
+    "weather": [
+      {
+        "country": "United States",
+        "weather": {
+          "temperature": 18.5,
+          "wind_speed": 15,
+          "icon": "03d"
+        }
+      },
+      {
+        "country": "Canada",
+        "weather": {
+          "temperature": 12.3,
+          "wind_speed": 20,
+          "icon": "09d"
+        }
+      },
+      {
+        "country": "Australia",
+        "weather": {
+          "temperature": 25.1,
+          "wind_speed": 10,
+          "icon": "04d"
+        }
+      },
+      {
+        "country": "Brazil",
+        "weather": {
+          "temperature": 30.2,
+          "wind_speed": 18,
+          "icon": "02d"
+        }
+      },
+      {
+        "country": "Japan",
+        "weather": {
+          "temperature": 15.6,
+          "wind_speed": 12,
+          "icon": "10d"
+        }
+      }
+    ]
+  }
+  
