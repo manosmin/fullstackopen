@@ -10,12 +10,12 @@ const SearchField = ({ query, handleChange }) => {
   );
 };
 
-const Results = ({ countries, message }) => {
+const Results = ({ countries, message, selectedCountry, handleShowInfo }) => {
   if (countries.length === 0) {
     return <p>{message}</p>;
   } 
-  else if (countries.length === 1) {
-    const country = countries[0];
+  else if (countries.length === 1 || selectedCountry) {
+    const country = selectedCountry || countries[0];
     const languages = Object.values(country.lang);
 
     return (
@@ -37,7 +37,10 @@ const Results = ({ countries, message }) => {
     return (
       <ul>
         {countries.map((c) => (
-          <li key={c.name}>{c.name}</li>
+          <li key={c.name}>
+            {c.name}
+            <button onClick={() => handleShowInfo(c)}>Show Info</button>
+          </li>
         ))}
       </ul>
     );
@@ -49,6 +52,11 @@ const App = () => {
   const [countries, setCountries] = useState([]);
   const [results, setResults] = useState([]);
   const [message, setMessage] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState(null);
+
+  const handleShowInfo = (country) => {
+    setSelectedCountry(country);
+  };
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -79,6 +87,7 @@ const App = () => {
 
   useEffect(() => {
     const searchCountries = () => {
+      handleShowInfo(null);
       if (query.trim() === "") {
         setResults([]);
         setMessage("");
@@ -106,7 +115,7 @@ const App = () => {
   return (
     <div>
       <SearchField query={query} handleChange={handleChange} />
-      <Results countries={results} message={message} />
+      <Results countries={results} message={message} selectedCountry={selectedCountry} handleShowInfo={handleShowInfo}/>
     </div>
   );
 };
