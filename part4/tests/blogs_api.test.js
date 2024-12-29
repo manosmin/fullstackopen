@@ -28,29 +28,18 @@ test('the first blog title is React patterns', async () => {
 })
 
 test('blog without title or url is not added', async () => {
-    const blogWithoutTitle = {
-      author: "Robert C. Martin",
-      url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
-      likes: 10,
-    };
   
     await api
       .post('/api/blogs')
-      .send(blogWithoutTitle)
+      .send(helper.blogWithoutTitle)
       .expect(400);
   
     let blogsAtEnd = await helper.blogsInDb();
     assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length);
   
-    const blogWithoutUrl = {
-      title: "Type wars",
-      author: "Robert C. Martin",
-      likes: 10,
-    };
-  
     await api
       .post('/api/blogs')
-      .send(blogWithoutUrl)
+      .send(helper.blogWithoutUrl)
       .expect(400);
   
     blogsAtEnd = await helper.blogsInDb();
@@ -58,16 +47,10 @@ test('blog without title or url is not added', async () => {
   });
 
 test('a valid blog can be added ', async () => {
-    const newBlog = {
-        title: "First class tests",
-        author: "Robert C. Martin",
-        url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
-        likes: 10,
-    }
 
     await api
         .post('/api/blogs')
-        .send(newBlog)
+        .send(helper.validBlog)
         .expect(201)
         .expect('Content-Type', /application\/json/)
 
@@ -88,22 +71,17 @@ test('the unique identifier property of the blog posts is named id', async () =>
   });
 
 test('if the likes property is missing from the request defaults to 0', async () => {
-    const newBlog = {
-        title: "Type wars",
-        author: "Robert C. Martin",
-        url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
-    }
 
     const response = await api
         .post('/api/blogs')
-        .send(newBlog)
+        .send(helper.blogWithoutLikes)
         .expect(201)
         .expect('Content-Type', /application\/json/);
 
     assert.strictEqual(response.body.likes, 0);
 
     const blogsAtEnd = await helper.blogsInDb();
-    const createdBlog = blogsAtEnd.find((blog) => blog.title === newBlog.title);
+    const createdBlog = blogsAtEnd.find((blog) => blog.title === helper.blogWithoutLikes.title);
 
     assert.strictEqual(createdBlog.likes, 0);
 });
