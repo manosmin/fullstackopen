@@ -27,9 +27,13 @@ const initialBlogs = [
   }
 ]
 
-const blogWithoutTitle = {
+const baseBlog = {
   author: 'Robert C. Martin',
   url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
+}
+
+const blogWithoutTitle = {
+  ...baseBlog,
   likes: 10,
 }
 
@@ -40,15 +44,13 @@ const blogWithoutUrl = {
 }
 
 const blogWithoutLikes = {
+  ...baseBlog,
   title: 'First class tests',
-  author: 'Robert C. Martin',
-  url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
 }
 
 const validBlog = {
+  ...baseBlog,
   title: 'First class tests',
-  author: 'Robert C. Martin',
-  url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
   likes: 10,
 }
 
