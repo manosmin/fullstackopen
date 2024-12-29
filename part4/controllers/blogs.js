@@ -3,15 +3,19 @@ const Blog = require('../models/blog')
 const blogsRouter = express.Router()
 
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({})
+  const blogs = await Blog.find({}).populate('user', { username: 1, name: 1, id: 1 })
   response.json(blogs)
 })
 
 blogsRouter.post('/', async (request, response) => {
   try {
-    const blog = new Blog(request.body)
+    const user = request.user
+    const blog = new Blog({ ...request.body, user: user._id })
     const savedBlog = await blog.save()
-    response.status(201).json(savedBlog)
+    user.blogs = user.blogs.concat(savedBlog._id)
+    await user.save()
+    const populatedBlog = await Blog.findById(savedBlog.id).populate('user', { username: 1, name: 1, id: 1 })
+    response.status(201).json(populatedBlog)
   } catch (error) {
     response.status(400).json({ error: error.message })
   }
@@ -39,7 +43,7 @@ blogsRouter.put('/:id', async (request, response) => {
       request.params.id,
       { likes },
       { new: true, runValidators: true }
-    )
+    ).populate('user', { username: 1, name: 1, id: 1 })
     if (!updatedBlog) {
       return response.status(404).json({ error: `Blog with id ${request.params.id} not found` })
     }
