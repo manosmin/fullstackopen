@@ -74,6 +74,27 @@ test('the unique identifier property of the blog posts is named id', async () =>
     });
   });
 
+test('if the likes property is missing from the request defaults to 0', async () => {
+    const newBlog = {
+        title: "Type wars",
+        author: "Robert C. Martin",
+        url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+    }
+
+    const response = await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/);
+
+    assert.strictEqual(response.body.likes, 0);
+
+    const blogsAtEnd = await helper.blogsInDb();
+    const createdBlog = blogsAtEnd.find((blog) => blog.title === newBlog.title);
+
+    assert.strictEqual(createdBlog.likes, 0);
+});
+
 beforeEach(async () => {
     await Blog.deleteMany({})
 
