@@ -27,22 +27,35 @@ test('the first blog title is React patterns', async () => {
     assert.strictEqual(contents.includes('React patterns'), true)
 })
 
-test('blog without title is not added', async () => {
-    const newBlog = {
-        author: "Robert C. Martin",
-        url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
-        likes: 10,
-    }
+test('blog without title or url is not added', async () => {
+    const blogWithoutTitle = {
+      author: "Robert C. Martin",
+      url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
+      likes: 10,
+    };
   
     await api
       .post('/api/blogs')
-      .send(newBlog)
-      .expect(400)
+      .send(blogWithoutTitle)
+      .expect(400);
   
-    const blogsAtEnd = await helper.blogsInDb()
+    let blogsAtEnd = await helper.blogsInDb();
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length);
   
-    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
-  })
+    const blogWithoutUrl = {
+      title: "Type wars",
+      author: "Robert C. Martin",
+      likes: 10,
+    };
+  
+    await api
+      .post('/api/blogs')
+      .send(blogWithoutUrl)
+      .expect(400);
+  
+    blogsAtEnd = await helper.blogsInDb();
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length);
+  });
 
 test('a valid blog can be added ', async () => {
     const newBlog = {
