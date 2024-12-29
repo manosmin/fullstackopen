@@ -1,16 +1,35 @@
 const { test, after, beforeEach, describe } = require('node:test')
 const assert = require('node:assert')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const helper = require('./test_helper')
 const api = supertest(app)
 
+let authToken
+
 beforeEach(async () => {
   await Blog.deleteMany({})
+  await User.deleteMany({})
 
-  const blogObjects = helper.initialBlogs.map(blog => new Blog(blog))
+  const user = {
+    username: 'TestUser',
+    password: 'TestPassword',
+  }
+
+  await api.post('/api/users/signup').send(user).expect(201)
+  const loginResponse = await api
+    .post('/api/users/login')
+    .send(user)
+    .expect(200)
+
+  authToken = loginResponse.body.token
+
+  const blogObjects = helper.initialBlogs.map((blog) => {
+    return new Blog(blog)
+  })
   await Promise.all(blogObjects.map(blog => blog.save()))
 })
 
@@ -19,28 +38,36 @@ after(async () => {
 })
 
 describe('fetched blogs', () => {
+  test('without token returns 401', async () => {
+    await api
+      .get('/api/blogs')
+      .expect(401)
+      .expect('Content-Type', /application\/json/)
+  })
+
   test('are returned as json', async () => {
     await api
       .get('/api/blogs')
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(200)
       .expect('Content-Type', /application\/json/)
   })
 
   test('equals the length of the blogs list', async () => {
-    const response = await api.get('/api/blogs')
+    const response = await api.get('/api/blogs').set('Authorization', `Bearer ${authToken}`)
 
     assert.strictEqual(response.body.length, helper.initialBlogs.length)
   })
 
   test('first blog title is React patterns', async () => {
-    const response = await api.get('/api/blogs')
+    const response = await api.get('/api/blogs').set('Authorization', `Bearer ${authToken}`)
 
     const contents = response.body.map(e => e.title)
     assert.strictEqual(contents.includes('React patterns'), true)
   })
 
   test('unique identifier property is named id', async () => {
-    const response = await api.get('/api/blogs')
+    const response = await api.get('/api/blogs').set('Authorization', `Bearer ${authToken}`)
 
     response.body.forEach(blog => {
       assert(blog.id !== undefined, 'Blog should have an id property')
@@ -53,6 +80,7 @@ describe('added blogs', () => {
   test('without title or url is not acceptable', async () => {
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${authToken}`)
       .send(helper.blogWithoutTitle)
       .expect(400)
 
@@ -61,6 +89,7 @@ describe('added blogs', () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${authToken}`)
       .send(helper.blogWithoutUrl)
       .expect(400)
 
@@ -71,6 +100,7 @@ describe('added blogs', () => {
   test('with valid properties is acceptable', async () => {
     await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${authToken}`)
       .send(helper.validBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -85,6 +115,7 @@ describe('added blogs', () => {
   test('with missing likes property defaults to 0 likes', async () => {
     const response = await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${authToken}`)
       .send(helper.blogWithoutLikes)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -102,6 +133,7 @@ describe('deleted blogs', () => {
   test('with existent id returns 204', async () => {
     const response = await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${authToken}`)
       .send(helper.validBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -111,7 +143,7 @@ describe('deleted blogs', () => {
       blogsAtStart.length,
       helper.initialBlogs.length + 1
     )
-    await api.delete(`/api/blogs/${createdBlogId}`).expect(204)
+    await api.delete(`/api/blogs/${createdBlogId}`).set('Authorization', `Bearer ${authToken}`).expect(204)
     const blogsAtEnd = await helper.blogsInDb()
     assert.strictEqual(
       blogsAtEnd.length,
@@ -126,6 +158,7 @@ describe('deleted blogs', () => {
     const blogsAtStart = await helper.blogsInDb()
     await api
       .delete(`/api/blogs/${nonExistentId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .expect(404)
     const blogsAtEnd = await helper.blogsInDb()
     assert.strictEqual(blogsAtEnd.length, blogsAtStart.length)
@@ -136,6 +169,7 @@ describe('updated blogs', () => {
   test('with existent id and likes is acceptable', async () => {
     const response = await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${authToken}`)
       .send(helper.validBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -145,6 +179,7 @@ describe('updated blogs', () => {
 
     const updateResponse = await api
       .put(`/api/blogs/${createdBlogId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .send(updatedLikes)
       .expect(200)
       .expect('Content-Type', /application\/json/)
@@ -164,6 +199,7 @@ describe('updated blogs', () => {
 
     await api
       .put(`/api/blogs/${nonExistentId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .send(updatedLikes)
       .expect(404)
 
@@ -174,6 +210,7 @@ describe('updated blogs', () => {
   test('with non-existent likes returns 400', async () => {
     const response = await api
       .post('/api/blogs')
+      .set('Authorization', `Bearer ${authToken}`)
       .send(helper.validBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -182,6 +219,7 @@ describe('updated blogs', () => {
 
     await api
       .put(`/api/blogs/${createdBlogId}`)
+      .set('Authorization', `Bearer ${authToken}`)
       .send()
       .expect(400)
 
