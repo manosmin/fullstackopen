@@ -97,3 +97,97 @@ describe('added blogs', () => {
     assert.strictEqual(createdBlog.likes, 0)
   })
 })
+
+describe('deleted blogs', () => {
+  test('with existent id returns 204', async () => {
+    const response = await api
+      .post('/api/blogs')
+      .send(helper.validBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+    const createdBlogId = response.body.id
+    const blogsAtStart = await helper.blogsInDb()
+    assert.strictEqual(
+      blogsAtStart.length,
+      helper.initialBlogs.length + 1
+    )
+    await api.delete(`/api/blogs/${createdBlogId}`).expect(204)
+    const blogsAtEnd = await helper.blogsInDb()
+    assert.strictEqual(
+      blogsAtEnd.length,
+      helper.initialBlogs.length
+    )
+    const blogExists = blogsAtEnd.find((blog) => blog.id === createdBlogId)
+    assert.strictEqual(blogExists, undefined)
+  })
+
+  test('with non-existent blog id returns 404', async () => {
+    const nonExistentId = await helper.nonExistingId()
+    const blogsAtStart = await helper.blogsInDb()
+    await api
+      .delete(`/api/blogs/${nonExistentId}`)
+      .expect(404)
+    const blogsAtEnd = await helper.blogsInDb()
+    assert.strictEqual(blogsAtEnd.length, blogsAtStart.length)
+  })
+})
+
+describe('updated blogs', () => {
+  test('with existent id and likes is acceptable', async () => {
+    const response = await api
+      .post('/api/blogs')
+      .send(helper.validBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const createdBlogId = response.body.id
+    const updatedLikes = { likes: 42 }
+
+    const updateResponse = await api
+      .put(`/api/blogs/${createdBlogId}`)
+      .send(updatedLikes)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    assert.strictEqual(updateResponse.body.likes, 42)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    const updatedBlog = blogsAtEnd.find((blog) => blog.id === createdBlogId)
+    assert.strictEqual(updatedBlog.likes, 42)
+  })
+
+  test('with non-existent id returns 404', async () => {
+    const nonExistentId = await helper.nonExistingId()
+    const updatedLikes = { likes: 15 }
+
+    const blogsAtStart = await helper.blogsInDb()
+
+    await api
+      .put(`/api/blogs/${nonExistentId}`)
+      .send(updatedLikes)
+      .expect(404)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    assert.strictEqual(blogsAtEnd.length, blogsAtStart.length)
+  })
+
+  test('with non-existent likes returns 400', async () => {
+    const response = await api
+      .post('/api/blogs')
+      .send(helper.validBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const createdBlogId = response.body.id
+
+    await api
+      .put(`/api/blogs/${createdBlogId}`)
+      .send()
+      .expect(400)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    const blog = blogsAtEnd.find((blog) => blog.id === createdBlogId)
+
+    assert.strictEqual(blog.likes, helper.validBlog.likes)
+  })
+})
