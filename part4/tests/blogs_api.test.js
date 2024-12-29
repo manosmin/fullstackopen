@@ -18,28 +18,28 @@ after(async () => {
   await mongoose.connection.close()
 })
 
-describe('fetching blogs', () => {
-  test('blogs are returned as json', async () => {
+describe('fetched blogs', () => {
+  test('are returned as json', async () => {
     await api
       .get('/api/blogs')
       .expect(200)
       .expect('Content-Type', /application\/json/)
   })
 
-  test('there are three blogs', async () => {
+  test('equals the length of the blogs list', async () => {
     const response = await api.get('/api/blogs')
 
     assert.strictEqual(response.body.length, helper.initialBlogs.length)
   })
 
-  test('the first blog title is React patterns', async () => {
+  test('first blog title is React patterns', async () => {
     const response = await api.get('/api/blogs')
 
     const contents = response.body.map(e => e.title)
     assert.strictEqual(contents.includes('React patterns'), true)
   })
 
-  test('the unique identifier property of the blog posts is named id', async () => {
+  test('unique identifier property is named id', async () => {
     const response = await api.get('/api/blogs')
 
     response.body.forEach(blog => {
@@ -49,8 +49,8 @@ describe('fetching blogs', () => {
   })
 })
 
-describe('adding blogs', () => {
-  test('blog without title or url is not added', async () => {
+describe('added blogs', () => {
+  test('without title or url is not acceptable', async () => {
     await api
       .post('/api/blogs')
       .send(helper.blogWithoutTitle)
@@ -68,7 +68,7 @@ describe('adding blogs', () => {
     assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
   })
 
-  test('a valid blog can be added', async () => {
+  test('with valid properties is acceptable', async () => {
     await api
       .post('/api/blogs')
       .send(helper.validBlog)
@@ -82,7 +82,7 @@ describe('adding blogs', () => {
     assert(titles.includes('First class tests'))
   })
 
-  test('if the likes property is missing from the request defaults to 0', async () => {
+  test('with missing likes property defaults to 0 likes', async () => {
     const response = await api
       .post('/api/blogs')
       .send(helper.blogWithoutLikes)

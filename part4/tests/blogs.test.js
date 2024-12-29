@@ -77,7 +77,7 @@ describe('total likes', () => {
     assert.strictEqual(result, 0)
   })
 
-  test('when list has only one blog, equals the likes of that', () => {
+  test('of list with one blog, equals the likes of that', () => {
     const result = listHelper.totalLikes(listWithOneBlog)
     assert.strictEqual(result, 5)
   })
@@ -141,7 +141,7 @@ describe('favorite blog', () => {
     }
   ]
 
-  test('of the blog with the most likes', () => {
+  test('of a bigger list is the blog with the most likes', () => {
     const result = listHelper.favoriteBlog(blogs)
     const expected = blogs[2]
     assert.deepStrictEqual(result, expected)
