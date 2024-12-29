@@ -32,19 +32,21 @@ describe('added users', () => {
   })
 
   test('fails if username is taken', async () => {
-    await api
+    const response = await api
       .post('/api/users/signup')
       .send(helper.takenUser)
       .expect(400)
+    assert(response.body.error.includes('E11000 duplicate key error collection'))
     const usersAtEnd = await helper.usersInDb()
     assert.strictEqual(usersAtEnd.length, helper.initialUsers.length)
   })
 
   test('fails if password is short', async () => {
-    await api
+    const response = await api
       .post('/api/users/signup')
       .send(helper.invalidUser)
       .expect(400)
+    assert(response.body.error.includes('password must be at least 3 characters long'))
     const usersAtEnd = await helper.usersInDb()
     assert.strictEqual(usersAtEnd.length, helper.initialUsers.length)
   })
