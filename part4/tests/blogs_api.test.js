@@ -65,6 +65,15 @@ test('a valid blog can be added ', async () => {
     assert(titles.includes('First class tests'))
 })
 
+test('the unique identifier property of the blog posts is named id', async () => {
+    const response = await api.get('/api/blogs');
+  
+    response.body.forEach((blog) => {
+      assert(blog.id !== undefined, 'Blog should have an id property');
+      assert.strictEqual(blog._id, undefined, '_id should not be present');
+    });
+  });
+
 beforeEach(async () => {
     await Blog.deleteMany({})
 
