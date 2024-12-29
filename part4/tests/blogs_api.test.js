@@ -89,14 +89,8 @@ test('if the likes property is missing from the request defaults to 0', async ()
 beforeEach(async () => {
     await Blog.deleteMany({})
 
-    let blogObject = new Blog(helper.initialBlogs[0])
-    await blogObject.save()
-
-    blogObject = new Blog(helper.initialBlogs[1])
-    await blogObject.save()
-
-    blogObject = new Blog(helper.initialBlogs[2])
-    await blogObject.save()
+    const blogObjects = helper.initialBlogs.map(blog => new Blog(blog))
+    await Promise.all(blogObjects.map(blog => blog.save()))
 })
 
 after(async () => {
