@@ -75,16 +75,11 @@ const validUser = {
 }
 
 const invalidUser = {
-  username: 'UserInvalid',
-  name: 'User Invalid',
-  password: 'pa'
+  ...validUser,
+  password: validUser.password.slice(0, 2)
 }
 
-const takenUser = {
-  username: 'User1',
-  name: 'User One',
-  password: 'password'
-}
+const takenUser = initialUsers[0]
 
 const nonExistingId = async () => {
   const blog = new Blog({ title: 'willremovethissoon', url: 'https://www.willremovethissoon.com' })
