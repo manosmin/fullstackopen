@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
+import BlogForm from "./components/BlogForm";
 import Notification from "./components/Notification";
 import blogService from "./services/blogs";
 import userService from "./services/users";
@@ -13,7 +14,8 @@ const App = () => {
 
   useEffect(() => {
     if (userInfo) {
-      blogService.getAll(userInfo.token).then((blogs) => setBlogs(blogs));
+      blogService.setAuthToken(userInfo.token);
+      blogService.getAll().then((blogs) => setBlogs(blogs));
     }
   }, [userInfo]);
 
@@ -75,11 +77,13 @@ const App = () => {
           <input
             placeholder="Username"
             type="text"
+            value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
           <input
             placeholder="Password"
             type="password"
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
           <input type="submit" />
@@ -98,6 +102,7 @@ const App = () => {
       </div>
       <h1>blogs</h1>
       {message && <Notification message={message} />}
+      <BlogForm setBlogs={setBlogs} setMessage={setMessage} />
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}

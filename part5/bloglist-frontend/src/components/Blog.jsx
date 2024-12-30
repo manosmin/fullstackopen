@@ -1,10 +1,19 @@
 const Blog = ({ blog }) => (
-  <div style={{marginBottom: 24}}>
+  <div>
     <h3>{blog.title}</h3>
-    <p>{blog.author}</p>
-    <a href={blog.url}>{blog.url}</a>
-    <p>{blog.likes}</p>
-  </div>  
-)
+    <p>
+      <strong>Author: </strong>
+      {blog.author}
+    </p>
+    <p>
+      <strong>URL: </strong>
+      <a href={blog.url}>{blog.url}</a>
+    </p>
+    <p>
+      <strong>Likes: </strong>
+      {blog.likes}
+    </p>
+  </div>
+);
 
-export default Blog
+export default Blog;

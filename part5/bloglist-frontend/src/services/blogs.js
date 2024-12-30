@@ -1,13 +1,25 @@
-import axios from 'axios'
-const baseUrl = '/api/blogs'
+import axios from "axios";
 
-const getAll = (token) => {
-  const config = {
-    headers: { Authorization: `Bearer ${token}` }
-  };
+const axiosInstance = axios.create({
+  baseURL: "/api/blogs",
+});
 
-  const request = axios.get(baseUrl, config)
-  return request.then(response => response.data)
+const setAuthToken = (token) => {
+  if (token) {
+    axiosInstance.defaults.headers["Authorization"] = `Bearer ${token}`;
+  } else {
+    delete axiosInstance.defaults.headers["Authorization"];
+  }
+};
+
+const getAll = () => {
+  return axiosInstance.get()
+    .then(response => response.data);
 }
 
-export default { getAll }
+const create = (blog) => {
+  return axiosInstance.post('', blog)
+    .then(response => response.data);
+}
+
+export default { getAll, create, setAuthToken };
