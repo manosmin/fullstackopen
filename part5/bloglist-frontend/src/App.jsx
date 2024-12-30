@@ -17,6 +17,17 @@ const App = () => {
     }
   }, [userInfo]);
 
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    const storedToken = localStorage.getItem("token");
+    if (storedUsername && storedToken) {
+      setUserInfo({
+        username: JSON.parse(storedUsername),
+        token: JSON.parse(storedToken),
+      });
+    }
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     userService
