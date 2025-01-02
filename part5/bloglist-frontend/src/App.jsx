@@ -19,7 +19,7 @@ const App = () => {
   useEffect(() => {
     if (userInfo) {
       blogService.setAuthToken(userInfo.token);
-      blogService.getAll().then((blogs) => setBlogs(blogs));
+      blogService.getAll().then((blogs) => setBlogs(blogs.sort((a, b) => b.likes - a.likes)));
     }
   }, [userInfo]);
 
@@ -99,7 +99,7 @@ const App = () => {
           </Togglable>
           <div>
             {blogs.map((blog) => (
-              <Blog key={blog.id} blog={blog} blogs={blogs} setBlogs={setBlogs} />
+              <Blog key={blog.id} blog={blog} blogs={blogs} setBlogs={setBlogs} setMessage={setMessage} userInfo={userInfo} />
             ))}
           </div>
         </div>

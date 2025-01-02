@@ -2,7 +2,7 @@ import Togglable from "../components/Togglable";
 import { useRef } from "react";
 import blogService from "../services/blogs";
 
-const Blog = ({ blog, blogs, setBlogs }) => {
+const Blog = ({ blog, setBlogs, setMessage, userInfo }) => {
   const viewBlogRef = useRef();
 
   const blogStyle = {
@@ -16,12 +16,57 @@ const Blog = ({ blog, blogs, setBlogs }) => {
   const handleLike = (blogId, currentLikes) => {
     blogService
       .updateLikes(blogId, { likes: currentLikes + 1 })
-      .then((response) =>
-        setBlogs(blogs.map((b) => (b.id === blogId ? response : b)))
-      )
+      .then((updatedBlog) => {
+        setBlogs((prevBlogs) =>
+          prevBlogs
+            .map((b) => (b.id === blogId ? updatedBlog : b))
+            .sort((a, b) => b.likes - a.likes)
+        );
+        setMessage({
+          text: `Blog "${updatedBlog.title}" liked`,
+          type: "success",
+        });
+        setTimeout(() => {
+          setMessage(null);
+        }, 3000);
+      })
       .catch((error) => {
         console.error(error);
+        setMessage({
+          text: `Error liking blog: ${error.message}`,
+          type: "error",
+        });
+        setTimeout(() => {
+          setMessage(null);
+        }, 3000);
       });
+  };
+
+  const removeBlog = (blogId, name) => {
+    if (window.confirm(`Are you sure you want to delete ${name}?`)) {
+      blogService
+        .remove(blogId)
+        .then(() => {
+          setBlogs((prevBlogs) => prevBlogs.filter((b) => b.id !== blogId));
+          setMessage({
+            text: `Blog ${name} removed successfully`,
+            type: "success",
+          });
+          setTimeout(() => {
+            setMessage(null);
+          }, 3000);
+        })
+        .catch((error) => {
+          console.error(error);
+          setMessage({
+            text: `Error removing blog: ${error.message}`,
+            type: "error",
+          });
+          setTimeout(() => {
+            setMessage(null);
+          }, 3000);
+        });
+    }
   };
 
   return (
@@ -41,6 +86,11 @@ const Blog = ({ blog, blogs, setBlogs }) => {
           {blog.likes}
           <button onClick={() => handleLike(blog.id, blog.likes)}>Like</button>
         </p>
+        {blog.user.some((user) => user.username === userInfo.username) && (
+          <button onClick={() => removeBlog(blog.id, blog.title)}>
+            Remove
+          </button>
+        )}
       </Togglable>
     </div>
   );

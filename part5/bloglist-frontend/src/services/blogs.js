@@ -22,9 +22,14 @@ const create = (blog) => {
     .then(response => response.data);
 }
 
+const remove = (id) => {
+  return axiosInstance.delete(`${id}`)
+    .then(response => response.data);
+}
+
 const updateLikes = (id, likes) => {
   return axiosInstance.put(`${id}`, likes)
     .then(response => response.data);
 }
 
-export default { getAll, create, updateLikes, setAuthToken };
+export default { getAll, create, remove, updateLikes, setAuthToken };
