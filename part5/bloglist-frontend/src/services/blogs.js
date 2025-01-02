@@ -22,4 +22,9 @@ const create = (blog) => {
     .then(response => response.data);
 }
 
-export default { getAll, create, setAuthToken };
+const updateLikes = (id, likes) => {
+  return axiosInstance.put(`${id}`, likes)
+    .then(response => response.data);
+}
+
+export default { getAll, create, updateLikes, setAuthToken };

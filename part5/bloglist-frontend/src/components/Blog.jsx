@@ -1,7 +1,8 @@
 import Togglable from "../components/Togglable";
 import { useRef } from "react";
+import blogService from "../services/blogs";
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, blogs, setBlogs }) => {
   const viewBlogRef = useRef();
 
   const blogStyle = {
@@ -10,6 +11,17 @@ const Blog = ({ blog }) => {
     border: "solid",
     borderWidth: 1,
     marginBottom: 5,
+  };
+
+  const handleLike = (blogId, currentLikes) => {
+    blogService
+      .updateLikes(blogId, { likes: currentLikes + 1 })
+      .then((response) =>
+        setBlogs(blogs.map((b) => (b.id === blogId ? response : b)))
+      )
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -27,7 +39,7 @@ const Blog = ({ blog }) => {
         <p>
           <strong>Likes: </strong>
           {blog.likes}
-          <button>Like</button>
+          <button onClick={() => handleLike(blog.id, blog.likes)}>Like</button>
         </p>
       </Togglable>
     </div>
