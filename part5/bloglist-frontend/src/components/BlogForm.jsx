@@ -1,7 +1,7 @@
 import { useState } from "react";
 import blogService from "../services/blogs";
 
-const BlogForm = ({ setBlogs, setMessage }) => {
+const BlogForm = ({ setBlogs, setMessage, showFormRef }) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
@@ -26,6 +26,7 @@ const BlogForm = ({ setBlogs, setMessage }) => {
       .create(newBlog)
       .then((response) => {
         setBlogs((prevBlogs) => [...prevBlogs, response]);
+        showFormRef.current.toggleVisibility();
         setMessage({ text: `Blog ${response.title} added successfully`, type: "success" });
         setTimeout(() => {
           setMessage(null);
