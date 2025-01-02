@@ -1,4 +1,3 @@
-import React from 'react'
 
 function LoginForm({ handleSubmit, username, password, setUsername, setPassword }) {
   return (
