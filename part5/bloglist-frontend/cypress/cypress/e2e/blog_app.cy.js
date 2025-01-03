@@ -81,5 +81,24 @@ describe('Blog app', function() {
       cy.contains('Blog A blog created by cypress removed successfully')
     })
 
+    it('The Remove button is visible only to appropriate user', function() {
+      const newBlog = {
+        title: 'A blog created by cypress',
+        url: 'https://ablogcreatedbycypress.com'
+      }
+      cy.createBlog(newBlog)
+      cy.contains('View').click()
+      const otherUser = {
+        name: 'John Doe',
+        username: 'john',
+        password: 'password'
+      }
+      cy.request('POST', `${Cypress.env('BACKEND')}/users/signup`, otherUser)
+      cy.login(otherUser)
+      cy.visit('')
+      cy.contains('View').click()
+      cy.get('html').should('not.contain', 'Remove')
+    })
+
   })
 })
