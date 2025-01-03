@@ -50,6 +50,7 @@ const BlogForm = ({ setBlogs, setMessage, showFormRef }) => {
       <h2>Add a new blog</h2>
       <form onSubmit={handleSubmit}>
           <input
+            id="blog-title"
             type="text"
             placeholder="Title"
             value={title}
@@ -62,6 +63,7 @@ const BlogForm = ({ setBlogs, setMessage, showFormRef }) => {
             onChange={(e) => setAuthor(e.target.value)}
           />
           <input
+            id="blog-url"
             type="url"
             placeholder="URL"
             value={url}
@@ -73,7 +75,7 @@ const BlogForm = ({ setBlogs, setMessage, showFormRef }) => {
             value={likes}
             onChange={(e) => setLikes(e.target.value)}
           />
-        <button type="submit">Add</button>
+        <button id="add-blog-button" type="submit">Add</button>
       </form>
     </div>
   );

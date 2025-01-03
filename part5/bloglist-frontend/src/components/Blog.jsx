@@ -70,7 +70,7 @@ const Blog = ({ blog, setBlogs, setMessage, userInfo }) => {
   };
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className="blog-item">
       <h3>{blog.title}</h3>
       <p>
           <strong>Author: </strong>
@@ -84,7 +84,7 @@ const Blog = ({ blog, setBlogs, setMessage, userInfo }) => {
         <p>
           <strong>Likes: </strong>
           {blog.likes}
-          <button onClick={() => handleLike(blog.id, blog.likes)}>Like</button>
+          <button className='blog-like-button' onClick={() => handleLike(blog.id, blog.likes)}>Like</button>
         </p>
         {blog.user.some((user) => user.username === userInfo.username) && (
           <button onClick={() => removeBlog(blog.id, blog.title)}>
