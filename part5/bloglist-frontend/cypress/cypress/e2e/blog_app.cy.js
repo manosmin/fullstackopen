@@ -100,5 +100,29 @@ describe('Blog app', function() {
       cy.get('html').should('not.contain', 'Remove')
     })
 
+    it('Blogs are sorted by likes descending', function () {
+      const newBlog1 = {
+        title: 'Not liked blog',
+        url: 'https://ablogcreatedbycypress.com',
+        likes: 0
+      }
+      const newBlog2 = {
+        ...newBlog1,
+        title: 'Liked blog',
+        likes: 2
+      }
+      const newBlog3 = {
+        ...newBlog1,
+        title: 'Most liked blog',
+        likes: 5
+      }
+      cy.createBlog(newBlog1)
+      cy.createBlog(newBlog2)
+      cy.createBlog(newBlog3)
+      cy.get('.blog-item').eq(0).should('contain', 'Most liked blog')
+      cy.get('.blog-item').eq(1).should('contain', 'Liked blog')
+      cy.get('.blog-item').eq(2).should('contain', 'Not liked blog')
+    })
+
   })
 })
