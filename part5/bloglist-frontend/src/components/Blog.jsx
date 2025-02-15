@@ -20,7 +20,7 @@ const Blog = ({ blog, setBlogs, setMessage, userInfo }) => {
         setBlogs((prevBlogs) =>
           prevBlogs
             .map((b) => (b.id === blogId ? updatedBlog : b))
-            .sort((a, b) => b.likes - a.likes)
+            .sort((a, b) => b.likes - a.likes),
         );
         setMessage({
           text: `Blog "${updatedBlog.title}" liked`,
@@ -73,8 +73,8 @@ const Blog = ({ blog, setBlogs, setMessage, userInfo }) => {
     <div style={blogStyle} className="blog-item">
       <h3>{blog.title}</h3>
       <p>
-          <strong>Author: </strong>
-          {blog.author}
+        <strong>Author: </strong>
+        {blog.author}
       </p>
       <Togglable buttonLabel="View blog" ref={viewBlogRef}>
         <p>
@@ -84,7 +84,12 @@ const Blog = ({ blog, setBlogs, setMessage, userInfo }) => {
         <p>
           <strong>Likes: </strong>
           {blog.likes}
-          <button className='blog-like-button' onClick={() => handleLike(blog.id, blog.likes)}>Like</button>
+          <button
+            className="blog-like-button"
+            onClick={() => handleLike(blog.id, blog.likes)}
+          >
+            Like
+          </button>
         </p>
         {blog.user.some((user) => user.username === userInfo.username) && (
           <button onClick={() => removeBlog(blog.id, blog.title)}>

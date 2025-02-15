@@ -26,7 +26,7 @@ test("the form calls the event handlers it received as props with the right deta
       setBlogs={mockSetBlogs}
       setMessage={mockSetMessage}
       showFormRef={mockShowFormRef}
-    />
+    />,
   );
 
   await user.type(screen.getByPlaceholderText("Title"), blog.title);

@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import blogService from "../services/blogs"
+import blogService from "../services/blogs";
 import Blog from "./Blog";
 
 const blog = {
@@ -66,7 +66,7 @@ test("calls event handler twice when like button is clicked twice", async () => 
   blogService.updateLikes = updateLikesMock;
 
   render(
-    <Blog blog={blog} setBlogs={mockSetBlogs} setMessage={mockSetMessage} />
+    <Blog blog={blog} setBlogs={mockSetBlogs} setMessage={mockSetMessage} />,
   );
 
   const viewButton = screen.getByText("View blog");

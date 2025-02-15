@@ -13,23 +13,19 @@ const setAuthToken = (token) => {
 };
 
 const getAll = () => {
-  return axiosInstance.get()
-    .then(response => response.data);
-}
+  return axiosInstance.get().then((response) => response.data);
+};
 
 const create = (blog) => {
-  return axiosInstance.post('', blog)
-    .then(response => response.data);
-}
+  return axiosInstance.post("", blog).then((response) => response.data);
+};
 
 const remove = (id) => {
-  return axiosInstance.delete(`${id}`)
-    .then(response => response.data);
-}
+  return axiosInstance.delete(`${id}`).then((response) => response.data);
+};
 
 const updateLikes = (id, likes) => {
-  return axiosInstance.put(`${id}`, likes)
-    .then(response => response.data);
-}
+  return axiosInstance.put(`${id}`, likes).then((response) => response.data);
+};
 
 export default { getAll, create, remove, updateLikes, setAuthToken };
