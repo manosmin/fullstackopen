@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import userService from "../services/users";
 import { Link } from "react-router-dom";
+import Container from "react-bootstrap/Container";
+import Table from "react-bootstrap/Table";
 
 export const Users = () => {
   const [users, setUsers] = useState([]);
@@ -14,9 +16,9 @@ export const Users = () => {
   }, []);
 
   return (
-    <div>
+    <Container>
       <h1>Users</h1>
-      <table>
+      <Table>
         <thead>
           <tr>
             <th></th>
@@ -35,7 +37,7 @@ export const Users = () => {
             </tr>
           ))}
         </tbody>
-      </table>
-    </div>
+      </Table>
+    </Container>
   );
 };

@@ -4,6 +4,8 @@ import { setNotification } from "../reducers/notificationReducer";
 import { useDispatch, useSelector } from "react-redux";
 import Togglable from "../components/Togglable";
 import { useNavigate } from "react-router-dom";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 
 function LoginForm() {
   const dispatch = useDispatch();
@@ -26,39 +28,45 @@ function LoginForm() {
       dispatch(setNotification(`Hello ${username}!`, "success"));
       navigate("/");
     } catch (error) {
-      dispatch(setNotification(`Error logging in. ${error.message}`, "error"));
+      dispatch(setNotification(`Error logging in. ${error.message}`, "danger"));
     }
   };
 
   return !user.username ? (
-    <Togglable buttonLabel="Login" ref={loginFormRef}>
-      <div>
-        <form onSubmit={handleSubmit}>
-          <input
-            id="username"
-            placeholder="Username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <input
-            id="password"
-            placeholder="Password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <input id="login-button" type="submit" />
-        </form>
-      </div>
-    </Togglable>
+    <div>
+      <Togglable buttonLabel="Login" ref={loginFormRef}>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3" controlId="username">
+            <Form.Label className="text-light">Username</Form.Label>
+            <Form.Control
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              type="text"
+              placeholder="Enter username"
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="password">
+            <Form.Label className="text-light">Password</Form.Label>
+            <Form.Control
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              placeholder="Enter password"
+            />
+          </Form.Group>
+          <Button id="login-button" variant="light" type="submit">
+            Submit
+          </Button>
+        </Form>
+      </Togglable>
+    </div>
   ) : (
-    <span>
-      {user.username} is logged in
-      <button style={{ marginLeft: 8 }} onClick={handleLogout}>
+    <div>
+      <span style={{ color: "white" }}>{user.username} is logged in</span>
+      <Button style={{ marginLeft: 12 }} variant="light" onClick={handleLogout}>
         Log out
-      </button>
-    </span>
+      </Button>
+    </div>
   );
 }
 

@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import userService from "../services/users";
 import { Link } from "react-router-dom";
+import Container from "react-bootstrap/Container";
+import ListGroup from "react-bootstrap/ListGroup";
+import Badge from "react-bootstrap/Badge";
 
 export const User = () => {
   const id = useParams().id;
@@ -22,16 +25,18 @@ export const User = () => {
   }
 
   return (
-    <div>
-      <h2>{user.username} blogs</h2>
-      <ul>
+    <Container>
+      <h2>
+        <Badge bg="info"> {user.username} blogs </Badge>
+      </h2>
+      <ListGroup>
         {user.blogs.map((blog) => (
-          <li key={blog.id}>
+          <ListGroup.Item key={blog.id}>
             <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-          </li>
+          </ListGroup.Item>
         ))}
-      </ul>
-    </div>
+      </ListGroup>
+    </Container>
   );
 };
 

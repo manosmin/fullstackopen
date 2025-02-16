@@ -66,7 +66,7 @@ blogsRouter.post('/:id/comments', async (request, response) => {
   }
 
   try {
-    const blog = await Blog.findById(request.params.id)
+    const blog = await Blog.findById(request.params.id).populate('user', { username: 1, name: 1, id: 1 })
     if (!blog) {
       return response.status(404).json({ error: `Blog with id ${request.params.id} not found` })
     }

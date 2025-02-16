@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { initializeBlogs } from "../reducers/blogReducer";
 import blogService from "../services/blogs";
 import { Link } from "react-router-dom";
+import Container from "react-bootstrap/Container";
+import ListGroup from "react-bootstrap/ListGroup";
 
 export const Blogs = () => {
   const dispatch = useDispatch();
@@ -19,23 +21,24 @@ export const Blogs = () => {
     }
   }, [user]);
 
-  if (!user.username) return <div>You must be logged in to see blog data.</div>;
+  if (!user.username)
+    return <Container>You must be logged in to see blog data.</Container>;
 
   return (
-    <div>
+    <Container>
       <h1>Blogs</h1>
       <Togglable buttonLabel="New blog" ref={showFormRef}>
         <BlogForm showFormRef={showFormRef} />
       </Togglable>
       <div>
-        <ul>
+        <ListGroup>
           {blogs.map((blog) => (
-            <li key={blog.id}>
+            <ListGroup.Item key={blog.id}>
               <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-            </li>
+            </ListGroup.Item>
           ))}
-        </ul>
+        </ListGroup>
       </div>
-    </div>
+    </Container>
   );
 };

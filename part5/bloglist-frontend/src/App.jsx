@@ -8,31 +8,28 @@ import { useDispatch } from "react-redux";
 import { initializeUser } from "./reducers/userReducer";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { Users } from "./components/Users";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
 
 const Menu = () => {
-  const padding = {
-    paddingRight: 5,
-  };
-  const menu = {
-    backgroundColor: "lightgray",
-    padding: 10,
-    display: "flex",
-    justifyContent: "space-between",
-    marginBottom: 10,
-  };
-
   return (
-    <div style={menu}>
-      <div>
-        <Link style={padding} to="/users">
-          Users
-        </Link>
-        <Link style={padding} to="/">
-          Blogs
-        </Link>
-      </div>
-      <LoginForm />
-    </div>
+    <Navbar bg="primary" data-bs-theme="light">
+      <Container>
+        <Navbar.Brand className="text-light">
+          <h3>Blogs App</h3>
+        </Navbar.Brand>
+        <Nav className="me-auto">
+          <Nav.Link className="text-light" as={Link} to="/users">
+            Users
+          </Nav.Link>
+          <Nav.Link className="text-light" as={Link} to="/">
+            Blogs
+          </Nav.Link>
+        </Nav>
+        <LoginForm />
+      </Container>
+    </Navbar>
   );
 };
 
@@ -48,7 +45,6 @@ const App = () => {
       <div>
         <Menu />
         <Notification />
-        <h1>Blogs app</h1>
         <Routes>
           <Route path="/" element={<Blogs />} />
           <Route path="/blogs/:id" element={<Blog />} />

@@ -8,6 +8,14 @@ import {
   addCommentToBlog,
 } from "../reducers/blogReducer";
 import { useNavigate, useParams } from "react-router-dom";
+import Button from "react-bootstrap/Button";
+import Card from "react-bootstrap/Card";
+import InputGroup from "react-bootstrap/InputGroup";
+import ListGroup from "react-bootstrap/ListGroup";
+import Form from "react-bootstrap/Form";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 const Blog = () => {
   const dispatch = useDispatch();
@@ -20,22 +28,16 @@ const Blog = () => {
   const [comment, setComment] = useState("");
 
   if (!userInfo.username)
-    return <div>You must be logged in to see blog data.</div>;
-
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: "solid",
-    borderWidth: 1,
-    marginBottom: 5,
-  };
+    return <Container>You must be logged in to see blog data.</Container>;
 
   const handleLike = async (blog) => {
     try {
       await dispatch(addLikeToBlog(blog));
       dispatch(setNotification(`Blog "${blog.title}" liked`, "success"));
     } catch (error) {
-      dispatch(setNotification(`Error liking blog. ${error.message}`, "error"));
+      dispatch(
+        setNotification(`Error liking blog. ${error.message}`, "danger"),
+      );
     }
   };
 
@@ -49,7 +51,7 @@ const Blog = () => {
         );
       } catch (error) {
         dispatch(
-          setNotification(`Error removing blog. ${error.message}`, "error"),
+          setNotification(`Error removing blog. ${error.message}`, "danger"),
         );
       }
     }
@@ -62,56 +64,75 @@ const Blog = () => {
       dispatch(setNotification("Comment added successfully", "success"));
     } catch (error) {
       dispatch(
-        setNotification(`Error adding comment. ${error.message}`, "error"),
+        setNotification(`Error adding comment. ${error.message}`, "danger"),
       );
     }
   };
 
   return (
     blog && (
-      <div style={blogStyle} className="blog-item">
-        <h3>{blog.title}</h3>
-        <p>
-          <strong>Author: </strong>
-          {blog.author}
-        </p>
-        <Togglable buttonLabel="View blog" ref={viewBlogRef}>
-          <p>
-            <strong>URL: </strong>
-            <a href={blog.url}>{blog.url}</a>
-          </p>
-          <p>
-            <strong>Likes: </strong>
-            {blog.likes}
-            <button
-              className="blog-like-button"
-              onClick={() => handleLike(blog)}
-            >
-              Like
-            </button>
-          </p>
-          <div>
-            <input
-              type="text"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              placeholder="type a comment..."
-            ></input>
-            <button onClick={handleAddComment}>add</button>
-          </div>
-          <strong>Comments: </strong>
-          <ul>
-            {blog.comments.map((comment, index) => (
-              <li key={index}>{comment}</li>
-            ))}
-          </ul>
-          {blog.user.some((user) => user.username === userInfo.username) && (
-            <button onClick={() => removeBlog(blog.id, blog.title)}>
-              Remove
-            </button>
-          )}
-        </Togglable>
-      </div>
+      <Container>
+        <Row>
+          <Card className="blog-item">
+            <Card.Title>{blog.title}</Card.Title>
+            <Card.Text>
+              <strong>Author: </strong>
+              {blog.author}
+            </Card.Text>
+            <Togglable buttonLabel="View blog" ref={viewBlogRef}>
+              <Card.Text>
+                <strong>URL: </strong>
+                <a href={blog.url}>{blog.url}</a>
+              </Card.Text>
+              <Card.Text>
+                <strong>Likes: </strong>
+                {blog.likes}
+                <Button
+                  variant="success"
+                  className="blog-like-button"
+                  onClick={() => handleLike(blog)}
+                >
+                  Like
+                </Button>
+              </Card.Text>
+              <Card.Text>
+                <InputGroup className="mb-3">
+                  <Form.Control
+                    type="text"
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    placeholder="Type a comment..."
+                    aria-label="comment"
+                  />
+                </InputGroup>
+                <Button variant="primary" onClick={handleAddComment}>
+                  Add
+                </Button>
+              </Card.Text>
+              <Card.Text>
+                <strong>Comments: </strong>
+                <ListGroup>
+                  {blog.comments.map((comment, index) => (
+                    <ListGroup.Item key={index}>{comment}</ListGroup.Item>
+                  ))}
+                </ListGroup>
+              </Card.Text>
+              <Card.Text>
+                {blog.user.some(
+                  (user) => user.username === userInfo.username,
+                ) && (
+                  <Button
+                    variant="danger"
+                    onClick={() => removeBlog(blog.id, blog.title)}
+                  >
+                    Remove
+                  </Button>
+                )}
+              </Card.Text>
+            </Togglable>
+          </Card>
+        </Row>
+      </Container>
     )
   );
 };
