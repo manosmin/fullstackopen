@@ -4,7 +4,7 @@ import Notification from "./components/Notification";
 import { Blogs } from "./components/Blogs";
 import Blog from "./components/Blog";
 import User from "./components/User";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { initializeUser } from "./reducers/userReducer";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { Users } from "./components/Users";
@@ -38,7 +38,6 @@ const Menu = () => {
 
 const App = () => {
   const dispatch = useDispatch();
-  const blogs = useSelector((state) => state.blogs);
 
   useEffect(() => {
     dispatch(initializeUser());
@@ -52,7 +51,7 @@ const App = () => {
         <h1>Blogs app</h1>
         <Routes>
           <Route path="/" element={<Blogs />} />
-          <Route path="/blogs/:id" element={<Blog blogs={blogs} />} />
+          <Route path="/blogs/:id" element={<Blog />} />
           <Route path="/users" element={<Users />} />
           <Route path="/users/:id" element={<User />} />
         </Routes>

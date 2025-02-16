@@ -19,7 +19,7 @@ export const Blogs = () => {
     }
   }, [user]);
 
-  if (!user.username) return;
+  if (!user.username) return <div>You must be logged in to see blog data.</div>;
 
   return (
     <div>

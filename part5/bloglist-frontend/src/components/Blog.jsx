@@ -9,14 +9,18 @@ import {
 } from "../reducers/blogReducer";
 import { useNavigate, useParams } from "react-router-dom";
 
-const Blog = ({ blogs }) => {
+const Blog = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user);
+  const blogs = useSelector((state) => state.blogs);
   const viewBlogRef = useRef();
   const navigate = useNavigate();
   const id = useParams().id;
   const blog = blogs.find((b) => b.id === id);
   const [comment, setComment] = useState("");
+
+  if (!userInfo.username)
+    return <div>You must be logged in to see blog data.</div>;
 
   const blogStyle = {
     paddingTop: 10,
