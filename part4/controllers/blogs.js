@@ -10,7 +10,7 @@ blogsRouter.get('/', async (request, response) => {
 blogsRouter.post('/', async (request, response) => {
   try {
     const user = request.user
-    const blog = new Blog({ ...request.body, user: user._id })
+    const blog = new Blog({ ...request.body, user: user._id, comments: [] })
     const savedBlog = await blog.save()
     user.blogs = user.blogs.concat(savedBlog._id)
     await user.save()
@@ -57,6 +57,28 @@ blogsRouter.put('/:id', async (request, response) => {
     response.status(400).json({ error: error.message })
   }
 })
+
+blogsRouter.post('/:id/comments', async (request, response) => {
+  const { comment } = request.body;
+
+  if (!comment || typeof comment !== 'string') {
+    return response.status(400).json({ error: 'Comment must be a non-empty string' });
+  }
+
+  try {
+    const blog = await Blog.findById(request.params.id);
+    if (!blog) {
+      return response.status(404).json({ error: `Blog with id ${request.params.id} not found` });
+    }
+
+    blog.comments.push(comment);
+    const updatedBlog = await blog.save();
+
+    response.json(updatedBlog);
+  } catch (error) {
+    response.status(400).json({ error: error.message });
+  }
+});
 
 
 module.exports = blogsRouter

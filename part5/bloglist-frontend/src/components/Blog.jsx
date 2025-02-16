@@ -69,6 +69,12 @@ const Blog = ({ blogs }) => {
               Like
             </button>
           </p>
+          <strong>Comments: </strong>
+          <ul>
+            {blog.comments.map((comment, index) => (
+              <li key={index}>{comment}</li>
+            ))}
+          </ul>
           {blog.user.some((user) => user.username === userInfo.username) && (
             <button onClick={() => removeBlog(blog.id, blog.title)}>
               Remove
