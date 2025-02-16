@@ -1,9 +1,9 @@
 import { useState } from "react";
-import blogService from "../services/blogs";
 import { useDispatch } from "react-redux";
 import { setNotification } from "../reducers/notificationReducer";
+import { addBlog } from "../reducers/blogReducer";
 
-const BlogForm = ({ setBlogs, setMessage, showFormRef }) => {
+const BlogForm = ({ showFormRef }) => {
   const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -17,7 +17,7 @@ const BlogForm = ({ setBlogs, setMessage, showFormRef }) => {
     setLikes("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newBlog = {
       title,
@@ -25,23 +25,19 @@ const BlogForm = ({ setBlogs, setMessage, showFormRef }) => {
       url,
       likes,
     };
-    blogService
-      .create(newBlog)
-      .then((response) => {
-        setBlogs((prevBlogs) => [...prevBlogs, response]);
-        showFormRef.current.toggleVisibility();
-        dispatch(
-          setNotification(
-            `Blog ${response.title} added successfully`,
-            "success",
-          ),
-        );
-        clearInput();
-      })
-      .catch((error) => {
-        console.error("Error adding blog:", error.response.data.error);
-        dispatch(setNotification(error.response.data.error, "error"));
-      });
+    try {
+      await dispatch(addBlog(newBlog));
+      dispatch(
+        setNotification(
+          `Blog "${newBlog.title}" added successfully`,
+          "success",
+        ),
+      );
+      showFormRef.current.toggleVisibility();
+      clearInput();
+    } catch (error) {
+      dispatch(setNotification(`Error adding blog. ${error.message}`, "error"));
+    }
   };
 
   return (

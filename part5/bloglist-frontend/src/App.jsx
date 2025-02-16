@@ -6,12 +6,13 @@ import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import userService from "./services/users";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setNotification } from "./reducers/notificationReducer";
+import { initializeBlogs } from "./reducers/blogReducer";
 
 const App = () => {
   const dispatch = useDispatch();
-  const [blogs, setBlogs] = useState([]);
+  const blogs = useSelector((state) => state.blogs);
   const [userInfo, setUserInfo] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -21,9 +22,7 @@ const App = () => {
   useEffect(() => {
     if (userInfo) {
       blogService.setAuthToken(userInfo.token);
-      blogService
-        .getAll()
-        .then((blogs) => setBlogs(blogs.sort((a, b) => b.likes - a.likes)));
+      dispatch(initializeBlogs());
     }
   }, [userInfo]);
 
@@ -87,17 +86,11 @@ const App = () => {
             </button>
           </p>
           <Togglable buttonLabel="New blog" ref={showFormRef}>
-            <BlogForm showFormRef={showFormRef} setBlogs={setBlogs} />
+            <BlogForm showFormRef={showFormRef} />
           </Togglable>
           <div>
             {blogs.map((blog) => (
-              <Blog
-                key={blog.id}
-                blog={blog}
-                blogs={blogs}
-                setBlogs={setBlogs}
-                userInfo={userInfo}
-              />
+              <Blog key={blog.id} blog={blog} userInfo={userInfo} />
             ))}
           </div>
         </div>

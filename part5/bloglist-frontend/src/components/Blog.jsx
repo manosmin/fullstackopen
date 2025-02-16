@@ -1,10 +1,10 @@
 import Togglable from "../components/Togglable";
 import { useRef } from "react";
-import blogService from "../services/blogs";
 import { useDispatch } from "react-redux";
 import { setNotification } from "../reducers/notificationReducer";
+import { addLikeToBlog, deleteBlog } from "../reducers/blogReducer";
 
-const Blog = ({ blog, setBlogs, userInfo }) => {
+const Blog = ({ userInfo, blog }) => {
   const dispatch = useDispatch();
   const viewBlogRef = useRef();
 
@@ -16,43 +16,27 @@ const Blog = ({ blog, setBlogs, userInfo }) => {
     marginBottom: 5,
   };
 
-  const handleLike = (blogId, currentLikes) => {
-    blogService
-      .updateLikes(blogId, { likes: currentLikes + 1 })
-      .then((updatedBlog) => {
-        setBlogs((prevBlogs) =>
-          prevBlogs
-            .map((b) => (b.id === blogId ? updatedBlog : b))
-            .sort((a, b) => b.likes - a.likes),
-        );
-        dispatch(
-          setNotification(`Blog "${updatedBlog.title}" liked`, "success"),
-        );
-      })
-      .catch((error) => {
-        console.error(error);
-        dispatch(
-          setNotification(`Error liking blog: ${error.message}`, "error"),
-        );
-      });
+  const handleLike = async (blog) => {
+    try {
+      await dispatch(addLikeToBlog(blog));
+      dispatch(setNotification(`Blog "${blog.title}" liked`, "success"));
+    } catch (error) {
+      dispatch(setNotification(`Error liking blog. ${error.message}`, "error"));
+    }
   };
 
-  const removeBlog = (blogId, name) => {
+  const removeBlog = async (blogId, name) => {
     if (window.confirm(`Are you sure you want to delete ${name}?`)) {
-      blogService
-        .remove(blogId)
-        .then(() => {
-          setBlogs((prevBlogs) => prevBlogs.filter((b) => b.id !== blogId));
-          dispatch(
-            setNotification(`Blog ${name} removed successfully`, "success"),
-          );
-        })
-        .catch((error) => {
-          console.error(error);
-          dispatch(
-            setNotification(`Error removing blog: ${error.message}`, "error"),
-          );
-        });
+      try {
+        await dispatch(deleteBlog(blogId));
+        dispatch(
+          setNotification(`Blog "${name}" removed successfully`, "success"),
+        );
+      } catch (error) {
+        dispatch(
+          setNotification(`Error removing blog. ${error.message}`, "error"),
+        );
+      }
     }
   };
 
@@ -71,10 +55,7 @@ const Blog = ({ blog, setBlogs, userInfo }) => {
         <p>
           <strong>Likes: </strong>
           {blog.likes}
-          <button
-            className="blog-like-button"
-            onClick={() => handleLike(blog.id, blog.likes)}
-          >
+          <button className="blog-like-button" onClick={() => handleLike(blog)}>
             Like
           </button>
         </p>
