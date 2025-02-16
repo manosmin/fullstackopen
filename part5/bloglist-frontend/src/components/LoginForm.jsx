@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { login } from "../reducers/userReducer";
+import { login, logout } from "../reducers/userReducer";
 import { setNotification } from "../reducers/notificationReducer";
 import { useDispatch, useSelector } from "react-redux";
 import Togglable from "../components/Togglable";
@@ -11,7 +11,10 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const loginFormRef = useRef();
 
-  if (user.username) return;
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(setNotification("Log out successful!", "success"));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,7 +26,7 @@ function LoginForm() {
     }
   };
 
-  return (
+  return !user.username ? (
     <Togglable buttonLabel="Login" ref={loginFormRef}>
       <div>
         <h2>Log in to application</h2>
@@ -46,6 +49,15 @@ function LoginForm() {
         </form>
       </div>
     </Togglable>
+  ) : (
+    <div>
+      <p>
+        {user.username} is logged in
+        <button style={{ marginLeft: 8 }} onClick={handleLogout}>
+          Log out
+        </button>
+      </p>
+    </div>
   );
 }
 
