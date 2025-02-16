@@ -1,11 +1,12 @@
 import Togglable from "../components/Togglable";
 import { useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setNotification } from "../reducers/notificationReducer";
 import { addLikeToBlog, deleteBlog } from "../reducers/blogReducer";
 
-const Blog = ({ userInfo, blog }) => {
+const Blog = ({ blog }) => {
   const dispatch = useDispatch();
+  const userInfo = useSelector((state) => state.user);
   const viewBlogRef = useRef();
 
   const blogStyle = {
