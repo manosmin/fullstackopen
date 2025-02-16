@@ -49,6 +49,7 @@ const App = () => {
       <div>
         <Menu />
         <Notification />
+        <h1>Blogs app</h1>
         <Routes>
           <Route path="/" element={<Blogs />} />
           <Route path="/blogs/:id" element={<Blog blogs={blogs} />} />
