@@ -1,7 +1,10 @@
 import { useState } from "react";
 import blogService from "../services/blogs";
+import { useDispatch } from "react-redux";
+import { setNotification } from "../reducers/notificationReducer";
 
 const BlogForm = ({ setBlogs, setMessage, showFormRef }) => {
+  const dispatch = useDispatch();
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
@@ -27,24 +30,17 @@ const BlogForm = ({ setBlogs, setMessage, showFormRef }) => {
       .then((response) => {
         setBlogs((prevBlogs) => [...prevBlogs, response]);
         showFormRef.current.toggleVisibility();
-        setMessage({
-          text: `Blog ${response.title} added successfully`,
-          type: "success",
-        });
-        setTimeout(() => {
-          setMessage(null);
-        }, 3000);
+        dispatch(
+          setNotification(
+            `Blog ${response.title} added successfully`,
+            "success",
+          ),
+        );
         clearInput();
       })
       .catch((error) => {
         console.error("Error adding blog:", error.response.data.error);
-        setMessage({
-          text: error.response.data.error,
-          type: "error",
-        });
-        setTimeout(() => {
-          setMessage(null);
-        }, 3000);
+        dispatch(setNotification(error.response.data.error, "error"));
       });
   };
 

@@ -6,13 +6,15 @@ import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
 import blogService from "./services/blogs";
 import userService from "./services/users";
+import { useDispatch } from "react-redux";
+import { setNotification } from "./reducers/notificationReducer";
 
 const App = () => {
+  const dispatch = useDispatch();
   const [blogs, setBlogs] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState(null);
   const showFormRef = useRef();
   const loginFormRef = useRef();
 
@@ -44,20 +46,11 @@ const App = () => {
         setUserInfo({ username: response.username, token: response.token });
         localStorage.setItem("username", JSON.stringify(response.username));
         localStorage.setItem("token", JSON.stringify(response.token));
-        setMessage({ text: `Hello ${response.username}!`, type: "success" });
-        setTimeout(() => {
-          setMessage(null);
-        }, 3000);
+        dispatch(setNotification(`Hello ${response.username}!`, "success"));
       })
       .catch((error) => {
         if (error.response && error.response.status === 401) {
-          setMessage({
-            text: error.response.data.error,
-            type: "error",
-          });
-          setTimeout(() => {
-            setMessage(null);
-          }, 3000);
+          dispatch(setNotification(error.response.data.error, "error"));
         } else {
           console.error("Error logging in:", error.response.data.error);
         }
@@ -68,16 +61,13 @@ const App = () => {
     setUserInfo(null);
     localStorage.removeItem("username");
     localStorage.removeItem("token");
-    setMessage({ text: "Log out successful!", type: "success" });
-    setTimeout(() => {
-      setMessage(null);
-    }, 3000);
+    dispatch(setNotification("Log out successful!", "success"));
   };
 
   return (
     <div>
       <h1>Blogs</h1>
-      {message && <Notification message={message} />}
+      <Notification />
       {!userInfo ? (
         <Togglable buttonLabel="Login" ref={loginFormRef}>
           <LoginForm
@@ -97,11 +87,7 @@ const App = () => {
             </button>
           </p>
           <Togglable buttonLabel="New blog" ref={showFormRef}>
-            <BlogForm
-              showFormRef={showFormRef}
-              setBlogs={setBlogs}
-              setMessage={setMessage}
-            />
+            <BlogForm showFormRef={showFormRef} setBlogs={setBlogs} />
           </Togglable>
           <div>
             {blogs.map((blog) => (
@@ -110,7 +96,6 @@ const App = () => {
                 blog={blog}
                 blogs={blogs}
                 setBlogs={setBlogs}
-                setMessage={setMessage}
                 userInfo={userInfo}
               />
             ))}

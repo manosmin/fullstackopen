@@ -1,8 +1,11 @@
 import Togglable from "../components/Togglable";
 import { useRef } from "react";
 import blogService from "../services/blogs";
+import { useDispatch } from "react-redux";
+import { setNotification } from "../reducers/notificationReducer";
 
-const Blog = ({ blog, setBlogs, setMessage, userInfo }) => {
+const Blog = ({ blog, setBlogs, userInfo }) => {
+  const dispatch = useDispatch();
   const viewBlogRef = useRef();
 
   const blogStyle = {
@@ -22,23 +25,15 @@ const Blog = ({ blog, setBlogs, setMessage, userInfo }) => {
             .map((b) => (b.id === blogId ? updatedBlog : b))
             .sort((a, b) => b.likes - a.likes),
         );
-        setMessage({
-          text: `Blog "${updatedBlog.title}" liked`,
-          type: "success",
-        });
-        setTimeout(() => {
-          setMessage(null);
-        }, 3000);
+        dispatch(
+          setNotification(`Blog "${updatedBlog.title}" liked`, "success"),
+        );
       })
       .catch((error) => {
         console.error(error);
-        setMessage({
-          text: `Error liking blog: ${error.message}`,
-          type: "error",
-        });
-        setTimeout(() => {
-          setMessage(null);
-        }, 3000);
+        dispatch(
+          setNotification(`Error liking blog: ${error.message}`, "error"),
+        );
       });
   };
 
@@ -48,23 +43,15 @@ const Blog = ({ blog, setBlogs, setMessage, userInfo }) => {
         .remove(blogId)
         .then(() => {
           setBlogs((prevBlogs) => prevBlogs.filter((b) => b.id !== blogId));
-          setMessage({
-            text: `Blog ${name} removed successfully`,
-            type: "success",
-          });
-          setTimeout(() => {
-            setMessage(null);
-          }, 3000);
+          dispatch(
+            setNotification(`Blog ${name} removed successfully`, "success"),
+          );
         })
         .catch((error) => {
           console.error(error);
-          setMessage({
-            text: `Error removing blog: ${error.message}`,
-            type: "error",
-          });
-          setTimeout(() => {
-            setMessage(null);
-          }, 3000);
+          dispatch(
+            setNotification(`Error removing blog: ${error.message}`, "error"),
+          );
         });
     }
   };
