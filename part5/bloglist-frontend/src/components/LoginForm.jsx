@@ -3,6 +3,7 @@ import { login, logout } from "../reducers/userReducer";
 import { setNotification } from "../reducers/notificationReducer";
 import { useDispatch, useSelector } from "react-redux";
 import Togglable from "../components/Togglable";
+import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
   const dispatch = useDispatch();
@@ -10,10 +11,12 @@ function LoginForm() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const loginFormRef = useRef();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     dispatch(logout());
     dispatch(setNotification("Log out successful!", "success"));
+    navigate("/");
   };
 
   const handleSubmit = async (e) => {
@@ -21,6 +24,7 @@ function LoginForm() {
     try {
       await dispatch(login({ username, password }));
       dispatch(setNotification(`Hello ${username}!`, "success"));
+      navigate("/");
     } catch (error) {
       dispatch(setNotification(`Error logging in. ${error.message}`, "error"));
     }

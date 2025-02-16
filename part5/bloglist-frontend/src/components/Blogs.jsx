@@ -1,10 +1,10 @@
 import React, { useRef, useEffect } from "react";
 import Togglable from "../components/Togglable";
 import BlogForm from "../components/BlogForm";
-import Blog from "../components/Blog";
 import { useDispatch, useSelector } from "react-redux";
 import { initializeBlogs } from "../reducers/blogReducer";
 import blogService from "../services/blogs";
+import { Link } from "react-router-dom";
 
 export const Blogs = () => {
   const dispatch = useDispatch();
@@ -27,9 +27,13 @@ export const Blogs = () => {
         <BlogForm showFormRef={showFormRef} />
       </Togglable>
       <div>
-        {blogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} />
-        ))}
+        <ul>
+          {blogs.map((blog) => (
+            <li key={blog.id}>
+              <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

@@ -3,11 +3,14 @@ import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setNotification } from "../reducers/notificationReducer";
 import { addLikeToBlog, deleteBlog } from "../reducers/blogReducer";
+import { useParams } from "react-router-dom";
 
-const Blog = ({ blog }) => {
+const Blog = ({ blogs }) => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user);
   const viewBlogRef = useRef();
+  const id = useParams().id;
+  const blog = blogs.find((b) => b.id === id);
 
   const blogStyle = {
     paddingTop: 10,
