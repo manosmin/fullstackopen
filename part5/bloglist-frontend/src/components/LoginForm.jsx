@@ -53,12 +53,12 @@ function LoginForm() {
       </div>
     </Togglable>
   ) : (
-      <span>
-        {user.username} is logged in
-        <button style={{ marginLeft: 8 }} onClick={handleLogout}>
-          Log out
-        </button>
-      </span>
+    <span>
+      {user.username} is logged in
+      <button style={{ marginLeft: 8 }} onClick={handleLogout}>
+        Log out
+      </button>
+    </span>
   );
 }
 

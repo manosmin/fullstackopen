@@ -1,8 +1,12 @@
 import Togglable from "../components/Togglable";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setNotification } from "../reducers/notificationReducer";
-import { addLikeToBlog, deleteBlog } from "../reducers/blogReducer";
+import {
+  addLikeToBlog,
+  deleteBlog,
+  addCommentToBlog,
+} from "../reducers/blogReducer";
 import { useNavigate, useParams } from "react-router-dom";
 
 const Blog = ({ blogs }) => {
@@ -12,6 +16,7 @@ const Blog = ({ blogs }) => {
   const navigate = useNavigate();
   const id = useParams().id;
   const blog = blogs.find((b) => b.id === id);
+  const [comment, setComment] = useState("");
 
   const blogStyle = {
     paddingTop: 10,
@@ -46,6 +51,18 @@ const Blog = ({ blogs }) => {
     }
   };
 
+  const handleAddComment = async () => {
+    try {
+      await dispatch(addCommentToBlog(id, comment));
+      setComment("");
+      dispatch(setNotification("Comment added successfully", "success"));
+    } catch (error) {
+      dispatch(
+        setNotification(`Error adding comment. ${error.message}`, "error"),
+      );
+    }
+  };
+
   return (
     blog && (
       <div style={blogStyle} className="blog-item">
@@ -69,6 +86,15 @@ const Blog = ({ blogs }) => {
               Like
             </button>
           </p>
+          <div>
+            <input
+              type="text"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="type a comment..."
+            ></input>
+            <button onClick={handleAddComment}>add</button>
+          </div>
           <strong>Comments: </strong>
           <ul>
             {blog.comments.map((comment, index) => (

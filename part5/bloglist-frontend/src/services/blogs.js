@@ -28,4 +28,17 @@ const updateLikes = (id, likes) => {
   return axiosInstance.put(`${id}`, likes).then((response) => response.data);
 };
 
-export default { getAll, create, remove, updateLikes, setAuthToken };
+const addComment = (id, comment) => {
+  return axiosInstance
+    .post(`${id}/comments`, comment)
+    .then((response) => response.data);
+};
+
+export default {
+  getAll,
+  create,
+  remove,
+  updateLikes,
+  setAuthToken,
+  addComment,
+};
