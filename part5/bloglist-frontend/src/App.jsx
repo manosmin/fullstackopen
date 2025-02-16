@@ -36,7 +36,6 @@ const App = () => {
   return (
     <Router>
       <div>
-        <h1>Blogs</h1>
         <Menu />
         <Notification />
         <LoginForm />

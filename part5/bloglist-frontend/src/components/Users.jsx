@@ -14,25 +14,28 @@ export const Users = () => {
   }, []);
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th></th>
-          <th>
-            <h2>blogs</h2>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {users.map((user) => (
-          <tr key={user.id}>
-            <td>
-              <Link to={`/users/${user.id}`}>{user.username}</Link>
-            </td>
-            <td>{user.blogs.length}</td>
+    <div>
+      <h1>Users</h1>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>
+              <h3>blogs created</h3>
+            </th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {users.map((user) => (
+            <tr key={user.id}>
+              <td>
+                <Link to={`/users/${user.id}`}>{user.username}</Link>
+              </td>
+              <td>{user.blogs.length}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };

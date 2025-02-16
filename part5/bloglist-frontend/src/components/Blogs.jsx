@@ -23,6 +23,7 @@ export const Blogs = () => {
 
   return (
     <div>
+      <h1>Blogs</h1>
       <Togglable buttonLabel="New blog" ref={showFormRef}>
         <BlogForm showFormRef={showFormRef} />
       </Togglable>
