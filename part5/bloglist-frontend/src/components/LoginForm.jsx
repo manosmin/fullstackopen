@@ -33,7 +33,6 @@ function LoginForm() {
   return !user.username ? (
     <Togglable buttonLabel="Login" ref={loginFormRef}>
       <div>
-        <h2>Log in to application</h2>
         <form onSubmit={handleSubmit}>
           <input
             id="username"
@@ -54,14 +53,12 @@ function LoginForm() {
       </div>
     </Togglable>
   ) : (
-    <div>
-      <p>
+      <span>
         {user.username} is logged in
         <button style={{ marginLeft: 8 }} onClick={handleLogout}>
           Log out
         </button>
-      </p>
-    </div>
+      </span>
   );
 }
 

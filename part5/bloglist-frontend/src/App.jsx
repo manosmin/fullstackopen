@@ -13,14 +13,25 @@ const Menu = () => {
   const padding = {
     paddingRight: 5,
   };
+  const menu = {
+    backgroundColor: "lightgray",
+    padding: 10,
+    display: "flex",
+    justifyContent: "space-between",
+    marginBottom: 10,
+  };
+
   return (
-    <div>
-      <Link style={padding} to="/users">
-        Users
-      </Link>
-      <Link style={padding} to="/">
-        Blogs
-      </Link>
+    <div style={menu}>
+      <div>
+        <Link style={padding} to="/users">
+          Users
+        </Link>
+        <Link style={padding} to="/">
+          Blogs
+        </Link>
+      </div>
+      <LoginForm />
     </div>
   );
 };
@@ -38,7 +49,6 @@ const App = () => {
       <div>
         <Menu />
         <Notification />
-        <LoginForm />
         <Routes>
           <Route path="/" element={<Blogs />} />
           <Route path="/blogs/:id" element={<Blog blogs={blogs} />} />
