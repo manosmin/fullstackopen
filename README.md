@@ -31,4 +31,4 @@ fullstackopen/
 - [GitHub Repository](https://github.com/fullstack-hy2020/fullstack-hy2020.github.io)
 
 ## Certificate 
-<img src="https://media.licdn.com/dms/image/v2/D4D2DAQGA5aeOlKzVHg/profile-treasury-image-shrink_800_800/B4DZUQvndPGcAY-/0/1739742673996?e=1740351600&v=beta&t=4scgSQfMespHEBJv-n23Z1JJ2_ruaKQ7RTYEuiNF42A" alt="Certificate" width="800"/>
+<img src="https://github.com/manosmin/fullstackopen/blob/master/cert.png" alt="Certificate" width="800"/>
