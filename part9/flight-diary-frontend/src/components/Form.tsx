@@ -1,6 +1,13 @@
 import { useState } from "react";
+import diaryService from '../services/diaries'
+import { Diary } from "../types";
 
-const Form = () => {
+interface FormProps {
+    diaries: Diary[],
+    setDiaries: React.Dispatch<React.SetStateAction<Diary[]>>
+}
+
+const Form = ({ diaries, setDiaries }: FormProps) => {
     const [date, setDate] = useState<string>('')
     const [visibility, setVisibility] = useState<string>('')
     const [weather, setWeather] = useState<string>('')
@@ -8,7 +15,11 @@ const Form = () => {
 
     const handleSubmit = (e: React.SyntheticEvent) => {
         e.preventDefault();
-        console.log("add");
+        diaryService.createNew({ date, weather, visibility, comment }).then(response => setDiaries(diaries.concat(response)));
+        setDate('');
+        setVisibility('');
+        setWeather('');
+        setComment('');
     };
 
     return (
