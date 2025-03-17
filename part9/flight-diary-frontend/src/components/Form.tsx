@@ -2,6 +2,7 @@ import { useState } from "react";
 import diaryService from '../services/diaries'
 import { Diary } from "../types";
 import axios from "axios";
+import RadioButton from "./RadioButton";
 interface FormProps {
     diaries: Diary[],
     setDiaries: React.Dispatch<React.SetStateAction<Diary[]>>
@@ -31,21 +32,25 @@ const Form = ({ diaries, setDiaries }: FormProps) => {
         setComment('');
     };
 
+    const visibilityOptions = ["great", "good", "ok", "poor"];
+
+    const weatherOptions = ["sunny", "rainy", "cloudy", "stormy", "windy"];
+
     return (
         <>
         <div style={{color: 'red'}}>{error}</div>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Date </label>
-                    <input value={date} onChange={(e) => setDate(e.target.value)}></input>
+                    <input type="date" value={date} onChange={(e) => setDate(e.target.value)}></input>
                 </div>
                 <div>
                     <label>Visibility </label>
-                    <input value={visibility} onChange={(e) => setVisibility(e.target.value)}></input>
+                    {visibilityOptions.map((v)=> <RadioButton key={v} value={visibility} button={v}  handleSelect={(e) => setVisibility(e.target.value)} />)}
                 </div>
                 <div>
                     <label>Weather </label>
-                    <input value={weather} onChange={(e) => setWeather(e.target.value)}></input>
+                    {weatherOptions.map((w)=> <RadioButton key={w} value={weather} button={w}  handleSelect={(e) => setWeather(e.target.value)} />)}
                 </div>
                 <div>
                     <label>Comment </label>
