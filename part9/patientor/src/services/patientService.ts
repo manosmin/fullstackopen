@@ -6,13 +6,19 @@ const getEntries = () : PatientEntry[] => {
   return patientsEntries;
 };
 
+const getEntry = (id: string) : PatientEntry | undefined => {
+  const patient: PatientEntry | undefined = patientsEntries.find(patient => patient.id == id);
+  return patient ? {...patient, entries: [] } : undefined;
+};
+
 const getNonSensitiveEntries = () : PatientEntryNoSsn[] => {
   return patientsEntries.map(({ dateOfBirth, gender, id, name, occupation }) => ({
     dateOfBirth,
     gender,
     id,
     name,
-    occupation
+    occupation,
+    entries: []
   }));
 };
 
@@ -24,6 +30,7 @@ const addEntry = (newEntry: PatientEntry): PatientEntry => {
 
 export default {
   getEntries,
+  getEntry,
   getNonSensitiveEntries,
   addEntry
 };

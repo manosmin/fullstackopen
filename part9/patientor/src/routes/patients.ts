@@ -2,13 +2,20 @@ import express from 'express';
 import { Response, Request, NextFunction } from 'express';
 import newEntrySchema from '../utils';
 import patientService from '../services/patientService';
-import { PatientEntryNoSsn, PatientEntry } from '../types';
+import { PatientEntryNoSsn, PatientEntry, ErrorMessage } from '../types';
 import z from 'zod';
 
 const router = express.Router();
 
 router.get('/', (_req, res: Response<PatientEntryNoSsn[]>) => {
   res.send(patientService.getNonSensitiveEntries());
+});
+
+router.get('/:id', (req, res: Response<PatientEntry | ErrorMessage>) => {
+  if (!patientService.getEntry(req.params.id)) {
+    res.status(404).send({ error: "Patient not found." });
+  }
+  res.send(patientService.getEntry(req.params.id));
 });
 
 const newPatientParser = (req: Request, _res: Response, next: NextFunction) => {
