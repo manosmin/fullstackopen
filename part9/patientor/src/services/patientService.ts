@@ -8,7 +8,7 @@ const getEntries = () : PatientEntry[] => {
 
 const getEntry = (id: string) : PatientEntry | undefined => {
   const patient: PatientEntry | undefined = patientsEntries.find(patient => patient.id == id);
-  return patient ? {...patient, entries: [] } : undefined;
+  return patient;
 };
 
 const getNonSensitiveEntries = () : PatientEntryNoSsn[] => {
