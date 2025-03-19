@@ -1,34 +1,37 @@
-# Full Stack Open Core
-
+# Full Stack Open
 <img src="https://www.helsinki.fi/assets/drupal/styles/16_10_xl/s3/media-image/fullstack_stack_1842x1080.png.webp?itok=yDDdEPDV" alt="Full Stack Open" width="400"/>
 
-## Content
-The course is divided into the following parts:
+This course is an introduction to modern web development with JavaScript. The main focus is on single-page applications implemented with React and supporting them with RESTful and GraphQL web services implemented with Node.js.
 
-1. **Introduction to React** - Components, props, state, and event handling.
-2. **Communicating with Server** - REST APIs, Axios, and effect hooks.
-3. **Programming a Server with Node.js and Express** - Backend basics, middleware, and MongoDB.
-4. **Testing Express Servers, User Administration** - Unit and integration testing, authentication, and security.
-5. **Testing React Applications** - Jest, React Testing Library, and E2E testing.
-6. **State Management with Redux and TanStack Query** - Redux and TanStack Query principles and implementation.
-7. **React Router and Styling** - Routing, navigation, and UI styling.
-
-## Project Structure
-```
-fullstackopen/
-├── part0/    # Basics of web applications
-├── part1/    # React fundamentals
-├── part2/    # Communicating with server
-├── part3/    # Backend with Node.js and Express
-├── part4/    # Testing and authentication
-├── part5/    # State management with Redux
-├── part6/    # Advanced React topics
-└── part7/    # React router, custom hooks, styling app with CSS and webpack
-```
-
-## Links
 - [Course Website](https://fullstackopen.com/en/)
 - [GitHub Repository](https://github.com/fullstack-hy2020/fullstack-hy2020.github.io)
 
-## Certificate 
-<img src="https://github.com/manosmin/fullstackopen/blob/master/cert.png" alt="Certificate" width="800"/>
+## Contents
+The completed course parts folders are divided as follows:
+
+0\. [**Basics of web applications** -  Fundamental concepts and principles of web development.](https://github.com/manosmin/fullstackopen/tree/master/part0)
+
+1\. [**Introduction to React** - Components, props, state, and event handling.](https://github.com/manosmin/fullstackopen/tree/master/part1)
+
+2\. [**Communicating with Server** - REST APIs, Axios, and effect hooks.](https://github.com/manosmin/fullstackopen/tree/master/part2)
+
+3\. [**Programming a Server with Node.js and Express** - Backend basics, middleware, and MongoDB.](https://github.com/manosmin/fullstackopen_part3)
+
+4\. [**Testing Express Servers, User Administration** - Unit and integration testing, authentication, and security.](https://github.com/manosmin/fullstackopen/tree/master/part4)
+
+5\. [**Testing React Applications** - Jest, React Testing Library, and E2E testing.](https://github.com/manosmin/fullstackopen/tree/master/part5)
+
+6\. [**State Management with Redux and TanStack Query** - Redux and TanStack Query principles and implementation.](https://github.com/manosmin/fullstackopen/tree/master/part6)
+
+7\. [**React Router and Styling** - Routing, navigation, and UI styling.](https://github.com/manosmin/fullstackopen/tree/master/part7)
+
+9\. [**TypeScript** - TypeScript basics, type annotations, interfaces, and generics.](https://github.com/manosmin/patientor-frontend)
+
+## Certificates
+*Core*
+
+<img src="https://github.com/manosmin/fullstackopen/blob/master/cert.png" alt="Core" width="800"/>
+
+*TypeScript*
+
+<img src="https://github.com/manosmin/fullstackopen/blob/master/cert-typescript.png" alt="TypeScript" width="800"/>
