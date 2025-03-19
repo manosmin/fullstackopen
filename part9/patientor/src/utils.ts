@@ -9,9 +9,9 @@ export const diagnosisEntrySchema = z.object({
 
 export const baseEntrySchema = z.object({
   id: z.string(),
-  date: z.string(),
-  specialist: z.string(),
-  description: z.string(),
+  date: z.string().nonempty(),
+  specialist: z.string().nonempty(),
+  description: z.string().nonempty(),
   diagnosisCodes: z.array(z.string()).optional(),
 });
 
