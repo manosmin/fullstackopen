@@ -102,6 +102,21 @@ const typeDefs = `
     dummy: Int
     bookCount: Int!
     authorsCount: Int!
+    allBooks: [Book]
+  }
+
+  type Author {
+    name: String!
+    id: ID!
+    born: Int
+  }
+
+  type Book {
+    title: String!
+    published: Int!
+    author: String!
+    id: ID!
+    genres: [String]
   }
 `;
 
@@ -109,8 +124,9 @@ const resolvers = {
   Query: {
     dummy: () => 0,
     bookCount: () => books.length,
-    authorsCount: () => authors.length
-  },
+    authorsCount: () => authors.length,
+    allBooks: () => books,
+  }
 };
 
 const server = new ApolloServer({
