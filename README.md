@@ -25,6 +25,8 @@ The completed course parts folders are divided as follows:
 
 7\. [**React Router and Styling** - Routing, navigation, and UI styling.](https://github.com/manosmin/fullstackopen/tree/master/part7)
 
+8\. [**GraphQL** - Efficient data fetching with GraphQL, schema design, queries, and mutations.](https://github.com/manosmin/fullstackopen/tree/master/part8)
+
 9\. [**TypeScript** - TypeScript basics, type annotations, interfaces, and generics.](https://github.com/manosmin/patientor-frontend)
 
 ## Certificates
