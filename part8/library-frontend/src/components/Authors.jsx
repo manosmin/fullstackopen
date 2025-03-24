@@ -4,14 +4,14 @@ import queries from "../queries";
 
 const Authors = ({ show, authors, setError }) => {
   const [setBornTo, setSetBornTo] = useState("");
-  const [name, setName] = useState("");
+  const [name, setName] = useState(authors.length > 0 ? authors[0].name : "");
 
   const [editBorn] = useMutation(queries.EDIT_AUTHOR_BORN, {
     refetchQueries: [{ query: queries.ALL_AUTHORS }],
     onError: (error) => {
       const messages = error.graphQLErrors.map((e) => e.message).join("\n");
       setError(messages);
-      setTimeout(() => props.setError(null), 3000);
+      setTimeout(() => setError(null), 3000);
     },
   });
 
@@ -46,15 +46,22 @@ const Authors = ({ show, authors, setError }) => {
         </tbody>
       </table>
       <form onSubmit={submit}>
-        <div>
-          author
-          <input
+        <label>
+          Author:
+          <select
             value={name}
+            name="name"
             onChange={({ target }) => setName(target.value)}
-          />
-        </div>
+          >
+            {authors.map((a) => (
+              <option key={a.name} value={a.name}>
+                {a.name}
+              </option>
+            ))}
+          </select>
+        </label>
         <div>
-          born
+          Born:
           <input
             value={setBornTo}
             onChange={({ target }) => setSetBornTo(Number(target.value))}
