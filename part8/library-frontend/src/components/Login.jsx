@@ -6,6 +6,7 @@ const Login = ({ show, setError, setToken }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [login] = useMutation(queries.LOGIN, {
+    refetchQueries: [{ query: queries.USER_INFO }],
     onError: (error) => {
       const messages = error.graphQLErrors.map((e) => e.message).join("\n");
       setError(messages);

@@ -3,6 +3,7 @@ import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import Login from "./components/Login";
+import FavoriteGenres from "./components/FavoriteGenres";
 import { useQuery } from "@apollo/client";
 import queries from "./queries";
 
@@ -18,10 +19,11 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [token, setToken] = useState(null);
 
+  const result_user = useQuery(queries.USER_INFO);
   const result_books = useQuery(queries.ALL_BOOKS);
   const result_authors = useQuery(queries.ALL_AUTHORS);
 
-  if (result_books.loading || result_authors.loading) {
+  if (result_user.loading || result_books.loading || result_authors.loading) {
     return <div>loading...</div>;
   }
 
@@ -40,6 +42,9 @@ const App = () => {
           <button onClick={() => setPage("login")}>login</button>
         ) : (
           <button onClick={handleLogout}>logout</button>
+        )}
+        {token && (
+          <button onClick={() => setPage("favorite")}>favorite genres</button>
         )}
       </div>
 
@@ -61,6 +66,8 @@ const App = () => {
         setError={setErrorMessage}
         setToken={setToken}
       />
+
+      <FavoriteGenres show={page === "favorite"} genre={result_user.data.me.favoriteGenre} />
     </div>
   );
 };

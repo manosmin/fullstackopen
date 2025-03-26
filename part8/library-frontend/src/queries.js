@@ -37,6 +37,18 @@ const ALL_BOOKS = gql`
   }
 `;
 
+const ALL_BOOKS_BY_GENRE = gql`
+  query Query($genre: String) {
+    allBooks(genre: $genre) {
+      title
+      published
+      author {
+        name
+      }
+    }
+  }
+`;
+
 const ALL_AUTHORS = gql`
   query {
     allAuthors {
@@ -64,4 +76,21 @@ const LOGIN = gql`
   }
 `;
 
-export default { CREATE_BOOK, ALL_BOOKS, ALL_AUTHORS, EDIT_AUTHOR_BORN, LOGIN };
+const USER_INFO = gql`
+  query {
+    me {
+      favoriteGenre
+      username
+    }
+  }
+`;
+
+export default {
+  CREATE_BOOK,
+  ALL_BOOKS,
+  ALL_AUTHORS,
+  EDIT_AUTHOR_BORN,
+  LOGIN,
+  USER_INFO,
+  ALL_BOOKS_BY_GENRE,
+};
