@@ -32,6 +32,7 @@ const ALL_BOOKS = gql`
         name
       }
       id
+      genres
     }
   }
 `;

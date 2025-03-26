@@ -45,32 +45,30 @@ const Authors = ({ show, authors, token, setError }) => {
           ))}
         </tbody>
       </table>
-      {token && (
-        <form onSubmit={submit}>
-          <label>
-            Author:
-            <select
-              value={name}
-              name="name"
-              onChange={({ target }) => setName(target.value)}
-            >
-              {authors.map((a) => (
-                <option key={a.name} value={a.name}>
-                  {a.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <div>
-            Born:
-            <input
-              value={setBornTo}
-              onChange={({ target }) => setSetBornTo(Number(target.value))}
-            />
-          </div>
-          <button type="submit">edit author</button>
-        </form>
-      )}
+      {token && <form onSubmit={submit}>
+        <label>
+          Author:
+          <select
+            value={name}
+            name="name"
+            onChange={({ target }) => setName(target.value)}
+          >
+            {authors.map((a) => (
+              <option key={a.name} value={a.name}>
+                {a.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <div>
+          Born:
+          <input
+            value={setBornTo}
+            onChange={({ target }) => setSetBornTo(Number(target.value))}
+          />
+        </div>
+        <button type="submit">edit author</button>
+      </form>}
     </div>
   );
 };

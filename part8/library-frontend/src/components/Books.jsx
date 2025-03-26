@@ -1,7 +1,28 @@
+import { useState } from "react";
+
 const Books = ({ show, books }) => {
+  const [filteredBooks, setFilteredBooks] = useState(books);
+
   if (!show) {
     return null;
   }
+
+  const genres = books
+    .filter((b) => b.genres)
+    .flatMap((b) => b.genres)
+    .reduce((uniqueGenres, genre) => {
+      if (!uniqueGenres.includes(genre)) {
+        uniqueGenres.push(genre);
+      }
+      return uniqueGenres;
+    }, []);
+
+  const handleClick = (genre) => {
+    return () => {
+      const filtered = books.filter((b) => b.genres?.includes(genre));
+      setFilteredBooks(filtered);
+    };
+  };
 
   return (
     <div>
@@ -14,7 +35,7 @@ const Books = ({ show, books }) => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {books.map((a) => (
+          {filteredBooks.map((a) => (
             <tr key={a.title}>
               <td>{a.title}</td>
               <td>{a.author.name}</td>
@@ -23,6 +44,12 @@ const Books = ({ show, books }) => {
           ))}
         </tbody>
       </table>
+      {genres.map((g) => (
+        <button onClick={handleClick(g)} key={g}>
+          {g}
+        </button>
+      ))}
+      <button onClick={() => setFilteredBooks(books)}>all genres</button>
     </div>
   );
 };
