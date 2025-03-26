@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import FavoriteGenres from "./components/FavoriteGenres";
 import { useQuery, useSubscription } from "@apollo/client";
 import queries from "./queries";
+import { useApolloClient } from '@apollo/client'
 
 const Notify = ({ errorMessage }) => {
   if (!errorMessage) {
@@ -18,6 +19,7 @@ const App = () => {
   const [page, setPage] = useState("authors");
   const [errorMessage, setErrorMessage] = useState(null);
   const [token, setToken] = useState(null);
+  const client = useApolloClient();
 
   const result_user = useQuery(queries.USER_INFO);
   const result_books = useQuery(queries.ALL_BOOKS);
@@ -28,6 +30,11 @@ const App = () => {
       console.log(data);
       const addedBookTitle = data.data.bookAdded.title;
       window.alert(`A new book was added: ${addedBookTitle}`);
+      client.cache.updateQuery({ query: queries.ALL_BOOKS }, ({ allBooks }) => {
+        return {
+          allBooks: allBooks.concat(data.data.bookAdded),
+        };
+      });
     },
   });
 
