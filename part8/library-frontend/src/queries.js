@@ -85,6 +85,19 @@ const USER_INFO = gql`
   }
 `;
 
+const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      author {
+        name
+      }
+      title
+      published
+      genres
+  }
+  }
+`;
+
 export default {
   CREATE_BOOK,
   ALL_BOOKS,
@@ -93,4 +106,5 @@ export default {
   LOGIN,
   USER_INFO,
   ALL_BOOKS_BY_GENRE,
+  BOOK_ADDED
 };

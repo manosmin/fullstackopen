@@ -4,7 +4,7 @@ import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import Login from "./components/Login";
 import FavoriteGenres from "./components/FavoriteGenres";
-import { useQuery } from "@apollo/client";
+import { useQuery, useSubscription } from "@apollo/client";
 import queries from "./queries";
 
 const Notify = ({ errorMessage }) => {
@@ -22,6 +22,14 @@ const App = () => {
   const result_user = useQuery(queries.USER_INFO);
   const result_books = useQuery(queries.ALL_BOOKS);
   const result_authors = useQuery(queries.ALL_AUTHORS);
+
+  useSubscription(queries.BOOK_ADDED, {
+    onData: ({ data }) => {
+      console.log(data);
+      const addedBookTitle = data.data.bookAdded.title;
+      window.alert(`A new book was added: ${addedBookTitle}`);
+    },
+  });
 
   if (result_user.loading || result_books.loading || result_authors.loading) {
     return <div>loading...</div>;
@@ -67,7 +75,7 @@ const App = () => {
         setToken={setToken}
       />
 
-      <FavoriteGenres show={page === "favorite"} genre={result_user.data.me.favoriteGenre} />
+      <FavoriteGenres show={page === "favorite"} genre={result_user.data.me} />
     </div>
   );
 };

@@ -1,13 +1,13 @@
 import { useQuery } from "@apollo/client";
 import queries from "../queries";
 
-const FavoriteGenres = ({ show, genre }) => {
+const FavoriteGenres = ({ show, me }) => {
   if (!show) {
     return null;
   }
 
   const result = useQuery(queries.ALL_BOOKS_BY_GENRE, {
-    variables: { genre },
+    variables: { genre: me?.favoriteGenre },
   });
 
   if (result.loading) return <div>loading...</div>;
@@ -15,9 +15,9 @@ const FavoriteGenres = ({ show, genre }) => {
   return (
     <div>
       <h2>recommendations</h2>
-      {genre && (
+      {me?.favoriteGenre && (
         <div>
-          books in your favorite genre <b>{genre}</b>
+          books in your favorite genre <b>{me.favoriteGenre}</b>
         </div>
       )}
       {result.data.allBooks && result.data.allBooks.length > 0 && (
