@@ -37,3 +37,7 @@ The completed course parts folders are divided as follows:
 *TypeScript*
 
 <img src="https://github.com/manosmin/fullstackopen/blob/master/cert-typescript.png" alt="TypeScript" width="800"/>
+
+*GraphQL*
+
+<img src="https://github.com/manosmin/fullstackopen/blob/master/cert-graphql.png" alt="GraphQL" width="800"/>
