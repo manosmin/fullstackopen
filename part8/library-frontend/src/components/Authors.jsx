@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import queries from "../queries";
 
-const Authors = ({ show, authors, setError }) => {
+const Authors = ({ show, authors, token, setError }) => {
   const [setBornTo, setSetBornTo] = useState("");
   const [name, setName] = useState(authors.length > 0 ? authors[0].name : "");
 
@@ -45,30 +45,32 @@ const Authors = ({ show, authors, setError }) => {
           ))}
         </tbody>
       </table>
-      <form onSubmit={submit}>
-        <label>
-          Author:
-          <select
-            value={name}
-            name="name"
-            onChange={({ target }) => setName(target.value)}
-          >
-            {authors.map((a) => (
-              <option key={a.name} value={a.name}>
-                {a.name}
-              </option>
-            ))}
-          </select>
-        </label>
-        <div>
-          Born:
-          <input
-            value={setBornTo}
-            onChange={({ target }) => setSetBornTo(Number(target.value))}
-          />
-        </div>
-        <button type="submit">edit author</button>
-      </form>
+      {token && (
+        <form onSubmit={submit}>
+          <label>
+            Author:
+            <select
+              value={name}
+              name="name"
+              onChange={({ target }) => setName(target.value)}
+            >
+              {authors.map((a) => (
+                <option key={a.name} value={a.name}>
+                  {a.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <div>
+            Born:
+            <input
+              value={setBornTo}
+              onChange={({ target }) => setSetBornTo(Number(target.value))}
+            />
+          </div>
+          <button type="submit">edit author</button>
+        </form>
+      )}
     </div>
   );
 };
