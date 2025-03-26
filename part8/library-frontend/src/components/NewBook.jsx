@@ -19,6 +19,13 @@ const NewBook = (props) => {
       props.setError(messages);
       setTimeout(() => props.setError(null), 3000);
     },
+    update: (cache, response) => {
+      cache.updateQuery({ query: queries.ALL_BOOKS }, ({ allBooks }) => {
+        return {
+          allBooks: allBooks.concat(response.data.addBook),
+        };
+      });
+    },
   });
 
   if (!props.show) {
