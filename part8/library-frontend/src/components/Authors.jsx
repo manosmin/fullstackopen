@@ -4,7 +4,7 @@ import queries from "../queries";
 
 const Authors = ({ show, authors, token, setError }) => {
   const [setBornTo, setSetBornTo] = useState("");
-  const [name, setName] = useState(authors.length > 0 ? authors[0].name : "");
+  const [name, setName] = useState("");
 
   const [editBorn] = useMutation(queries.EDIT_AUTHOR_BORN, {
     refetchQueries: [{ query: queries.ALL_AUTHORS }],

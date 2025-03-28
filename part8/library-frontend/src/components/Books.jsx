@@ -16,6 +16,13 @@ const Books = ({ show, books }) => {
 
   if (result.loading) return <div>loading...</div>;
 
+  const handleGenreChange = (g) => {
+    return () => {
+      setSelectedGenre(g);
+      result.refetch();
+    };
+  };
+
   const genres = books
     .filter((b) => b.genres)
     .flatMap((b) => b.genres)
@@ -49,11 +56,11 @@ const Books = ({ show, books }) => {
         </tbody>
       </table>
       {genres.map((g) => (
-        <button onClick={() => setSelectedGenre(g)} key={g}>
+        <button onClick={handleGenreChange(g)} key={g}>
           {g}
         </button>
       ))}
-      <button onClick={() => setSelectedGenre("")}>all genres</button>
+      <button onClick={handleGenreChange("")}>all genres</button>
     </div>
   );
 };

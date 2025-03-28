@@ -6,7 +6,7 @@ import Login from "./components/Login";
 import FavoriteGenres from "./components/FavoriteGenres";
 import { useQuery, useSubscription } from "@apollo/client";
 import queries from "./queries";
-import { useApolloClient } from '@apollo/client'
+import { useApolloClient } from "@apollo/client";
 
 const Notify = ({ errorMessage }) => {
   if (!errorMessage) {
@@ -15,11 +15,32 @@ const Notify = ({ errorMessage }) => {
   return <div style={{ color: "red" }}>{errorMessage}</div>;
 };
 
+export const updateCache = (cache, query, addedBook) => {
+  // helper that is used to eliminate saving same person twice
+  const uniqByName = (a) => {
+    let seen = new Set();
+    return a.filter((item) => {
+      let k = item.name;
+      return seen.has(k) ? false : seen.add(k);
+    });
+  };
+
+  cache.updateQuery(query, ({ allBooks }) => {
+    return {
+      allBooks: uniqByName(allBooks.concat(addedBook)),
+    };
+  });
+};
+
 const App = () => {
   const [page, setPage] = useState("authors");
   const [errorMessage, setErrorMessage] = useState(null);
   const [token, setToken] = useState(null);
   const client = useApolloClient();
+
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+  }, []);
 
   const result_user = useQuery(queries.USER_INFO);
   const result_books = useQuery(queries.ALL_BOOKS);
@@ -28,13 +49,14 @@ const App = () => {
   useSubscription(queries.BOOK_ADDED, {
     onData: ({ data }) => {
       console.log(data);
-      const addedBookTitle = data.data.bookAdded.title;
-      window.alert(`A new book was added: ${addedBookTitle}`);
-      client.cache.updateQuery({ query: queries.ALL_BOOKS }, ({ allBooks }) => {
-        return {
-          allBooks: allBooks.concat(data.data.bookAdded),
-        };
-      });
+      if (data.data.bookAdded) {
+        window.alert(`a new book was added`);
+        updateCache(
+          client.cache,
+          { query: queries.ALL_BOOKS },
+          data.data.bookAdded
+        );
+      }
     },
   });
 
@@ -45,6 +67,7 @@ const App = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setToken(null);
+    client.resetStore();
   };
 
   return (
@@ -82,7 +105,7 @@ const App = () => {
         setToken={setToken}
       />
 
-      <FavoriteGenres show={page === "favorite"} genre={result_user.data.me} />
+      <FavoriteGenres show={page === "favorite"} me={result_user.data.me} />
     </div>
   );
 };

@@ -6,7 +6,6 @@ const Login = ({ show, setError, setToken }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [login] = useMutation(queries.LOGIN, {
-    refetchQueries: [{ query: queries.USER_INFO }],
     onError: (error) => {
       const messages = error.graphQLErrors.map((e) => e.message).join("\n");
       setError(messages);
@@ -22,8 +21,10 @@ const Login = ({ show, setError, setToken }) => {
     e.preventDefault();
     login({ variables: { username: username, password: password } })
       .then((result) => {
-        localStorage.setItem("token", result.data.login.value);
-        setToken(result.data.login.value);
+        if (result.data) {
+          localStorage.setItem("token", result.data.login.value);
+          setToken(result.data.login.value);
+        }
       })
       .catch((error) => console.error(error));
     setUsername("");

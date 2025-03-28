@@ -1,23 +1,28 @@
 import { useQuery } from "@apollo/client";
 import queries from "../queries";
+import { useEffect } from "react";
 
 const FavoriteGenres = ({ show, me }) => {
-  if (!show) {
-    return null;
-  }
-
   const result = useQuery(queries.ALL_BOOKS_BY_GENRE, {
     variables: { genre: me?.favoriteGenre },
   });
+
+  useEffect(() => {
+    result.refetch();
+  }, [])
+
+  if (!show) {
+    return null;
+  }
 
   if (result.loading) return <div>loading...</div>;
 
   return (
     <div>
       <h2>recommendations</h2>
-      {me?.favoriteGenre && (
+      {me && (
         <div>
-          books in your favorite genre <b>{me.favoriteGenre}</b>
+          books in your favorite genre <b>{me?.favoriteGenre}</b>
         </div>
       )}
       {result.data.allBooks && result.data.allBooks.length > 0 && (
