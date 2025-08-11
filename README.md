@@ -29,6 +29,9 @@ The completed course parts folders are divided as follows:
 
 9\. [**TypeScript** - TypeScript basics, type annotations, interfaces, and generics.](https://github.com/manosmin/patientor-frontend)
 
+11\. [**CI/CD** - Create CI/CD pipelines and automated workflows using GitHub Actions to streamline build, test, and deployment processes.](https://github.com/manosmin/full-stack-open-pokedex)
+
+
 ## Certificates
 *Core*
 
@@ -41,3 +44,7 @@ The completed course parts folders are divided as follows:
 *GraphQL*
 
 <img src="https://github.com/manosmin/fullstackopen/blob/master/cert-graphql.png" alt="GraphQL" width="800"/>
+
+*CI/CD*
+
+<img src="https://github.com/manosmin/fullstackopen/blob/master/cert-cicd.png" alt="CI/CD" width="800"/>
