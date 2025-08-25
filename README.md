@@ -2,7 +2,6 @@
 <div align="center"><img src="https://www.helsinki.fi/assets/drupal/styles/16_10_xl/s3/media-image/fullstack_stack_1842x1080.png.webp?itok=yDDdEPDV" alt="Full Stack Open" width="600"/></div>
 
 ## Contents
-The course parts folders are divided as follows:
 
 0\. [**Basics of web applications**](https://github.com/manosmin/fullstackopen/tree/master/part0) -  Fundamental concepts and principles of web development.
 
@@ -29,9 +28,9 @@ The course parts folders are divided as follows:
 
 ## Certificates
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px;" align="center">
-    <img src="https://github.com/manosmin/fullstackopen/blob/master/cert.png" alt="Core" width="40%"/>
-    <img src="https://github.com/manosmin/fullstackopen/blob/master/cert-typescript.png" alt="TypeScript" width="40%"/>
-    <img src="https://github.com/manosmin/fullstackopen/blob/master/cert-graphql.png" alt="GraphQL" width="40%"/>
-    <img src="https://github.com/manosmin/fullstackopen/blob/master/cert-cicd.png" alt="CI/CD" width="40%"/>
+  <div style="display: grid;" align="center">
+    <img src="https://github.com/manosmin/fullstackopen/blob/master/images/cert.png" alt="Core" width="48%"/>
+    <img src="https://github.com/manosmin/fullstackopen/blob/master/images/cert-typescript.png" alt="TypeScript" width="48%"/>
+    <img src="https://github.com/manosmin/fullstackopen/blob/master/images/cert-graphql.png" alt="GraphQL" width="48%"/>
+    <img src="https://github.com/manosmin/fullstackopen/blob/master/images/cert-cicd.png" alt="CI/CD" width="48%"/>
   </div>
