@@ -27,9 +27,9 @@ The completed course parts folders are divided as follows:
 
 8\. [**GraphQL** - Efficient data fetching with GraphQL, schema design, queries, and mutations.](https://github.com/manosmin/fullstackopen/tree/master/part8)
 
-9\. [**TypeScript** - TypeScript basics, type annotations, interfaces, and generics.](https://github.com/manosmin/patientor-frontend)
+9\. [**TypeScript** - TypeScript basics, type annotations, interfaces, and generics.](https://github.com/manosmin/fullstackopen/tree/master/part9)
 
-11\. [**CI/CD** - Create CI/CD pipelines and automated workflows using GitHub Actions to streamline build, test, and deployment processes.](https://github.com/manosmin/full-stack-open-pokedex)
+11\. [**CI/CD** - Create CI/CD pipelines and automated workflows using GitHub Actions to streamline build, test, and deployment processes.](https://github.com/manosmin/fullstackopen/tree/master/part11)
 
 
 ## Certificates

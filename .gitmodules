@@ -1,9 +1,12 @@
 [submodule "part3"]
 	path = part3
 	url = https://github.com/manosmin/fullstackopen_part3
-[submodule "part11"]
-	path = part11
-	url = https://github.com/manosmin/fullstackopen_part11
 [submodule "part9/patientor-frontend"]
 	path = part9/patientor-frontend
 	url = https://github.com/manosmin/patientor-frontend
+[submodule "part11/full-stack-open-pokedex"]
+	path = part11/full-stack-open-pokedex
+	url = https://github.com/manosmin/full-stack-open-pokedex
+[submodule "part11/phonebook"]
+	path = part11/phonebook
+	url = https://github.com/manosmin/fullstackopen_part11
