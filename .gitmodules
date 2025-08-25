@@ -1,0 +1,6 @@
+[submodule "part3"]
+	path = part3
+	url = https://github.com/manosmin/fullstackopen_part3
+[submodule "part11"]
+	path = part11
+	url = https://github.com/manosmin/fullstackopen_part11
